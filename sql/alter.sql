@@ -1,0 +1,17 @@
+alter table login 
+    add constraint fk_customerID FOREIGN KEY (customerID) REFERENCES customer(customerID);
+
+alter table account
+    add constraint fk_accCustomerID FOREIGN KEY (customerID) REFERENCES customer(customerID);
+
+alter table account
+    add constraint fk_branchID FOREIGN KEY (branchID) REFERENCES branch(branchID);
+
+alter table debitCard
+    add constraint fk_accountNum FOREIGN KEY (accountNumber) REFERENCES account(accountNumber);
+
+alter table transaction
+    add constraint fk_debitedAcc FOREIGN KEY (debitedFromAcc) REFERENCES account(accountNumber);
+
+alter table transaction
+    add constraint fk_creditedAcc FOREIGN KEY (creditedToAcc) REFERENCES account(accountNumber);
