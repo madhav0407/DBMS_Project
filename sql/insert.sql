@@ -8,10 +8,10 @@ insert into customer(customerID, c_name, phone_num, c_address, dob) VALUES
 (2, 'Madhav Sood', '9910093697', 'IIITB', '2003-07-04'),
 (3, 'Nilay Kamat', '9011496298', 'IIITB', '1987-2-11');
 
-insert into login(pass, customerID) VALUES
-('shlok', 1),
-('madhav', 2),
-('nilay', 3);
+insert into login(username, pass, customerID) VALUES
+('shlok', 'shlok', 1),
+('madhav', 'madhav', 2),
+('nilay', 'nilay', 3);
 
 insert into account(customerID, accountNumber, balance, minBalance, branchID, accountStatus) VALUES
 (1, '11111111', 5234789.00, 10000.00, 1, 1),

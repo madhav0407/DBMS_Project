@@ -1,7 +1,8 @@
 create table login (
     pass varchar(100),
     customerID int,
-    constraint pk_login PRIMARY KEY (customerID)
+    username varchar(100),
+    constraint pk_login PRIMARY KEY (username)
 );
 
 create table customer (

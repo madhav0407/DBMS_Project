@@ -7,7 +7,7 @@ public class Transaction {
     private String transactionType;
     private String paymentMethod; 
 
-    public Transaction (int transactionID, int amountTransferred, String debitedFromAccount, String creditedToAccount, String transactionDate, 
+    public Transaction (int transactionID, float amountTransferred, String debitedFromAccount, String creditedToAccount, String transactionDate, 
     String transactionType, String paymentMethod) {
         this.transactionID = transactionID;
         this.amountTransferred = amountTransferred;
