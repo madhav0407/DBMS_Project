@@ -50,8 +50,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(int cid, String Name, String phNum, String Address, String DOB) {
-        customerID = cid;
+    public Customer(String Name, String phNum, String Address, String DOB) {
         name = Name;
         phoneNum = phNum;
         address = Address;

@@ -1,4 +1,6 @@
 import java.sql.*;
+
+import com.mysql.cj.log.Log;
 /*
 	Methods to be called in the following order:
 
@@ -11,13 +13,15 @@ public class DAO_Factory{
 	public enum TXN_STATUS { COMMIT, ROLLBACK };
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://localhost/daoproject?characterEncoding=latin1";
+	static final String DB_URL = "jdbc:mysql://localhost/bank?characterEncoding=latin1";
 	static final String USER = "root";
 	static final String PASS = "shlok";
 	Connection dbconnection = null;
 
 	// You can add additional DAOs here as needed
 	TransactionDAO transactionDAO = null;
+	LoginDAO loginDAO = null;
+	CustomerDAO customerDAO = null;
 
 	boolean activeConnection = false;
 
@@ -59,6 +63,29 @@ public class DAO_Factory{
 
 		return transactionDAO;
 	}
+
+	public LoginDAO getLoginDao() throws Exception
+	{
+		if( activeConnection == false )
+			throw new Exception("Connection not activated...");
+
+		if (loginDAO == null )
+			loginDAO = new LoginDAO_JDBC(dbconnection);
+
+		return loginDAO;
+	}
+
+	public CustomerDAO getCustomerDao() throws Exception
+	{
+		if( activeConnection == false )
+			throw new Exception("Connection not activated...");
+
+		if (customerDAO == null )
+			customerDAO = new CustomerDAO_JDBC (dbconnection);
+
+		return customerDAO;
+	}
+
 	public void deactivateConnection( TXN_STATUS txn_status )
 	{
 		// Okay to keep deactivating an already deactivated connection

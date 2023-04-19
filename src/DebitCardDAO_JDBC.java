@@ -2,7 +2,6 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.mysql.cj.jdbc.SuspendableXAConnection;
 
 public class DebitCardDAO_JDBC implements DebitCardDAO {
     Connection dbConnection;

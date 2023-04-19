@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.sql.*;
 
 public class TransactionDAO_JDBC implements TransactionDAO {
@@ -12,37 +10,36 @@ public class TransactionDAO_JDBC implements TransactionDAO {
 	public void addTransaction(Transaction trans) {
 		PreparedStatement preparedStatement = null;
 		String sql;
-		sql = "insert into transaction VALUES (?, ?, ?, ?, ?, ?, ?);";
+		sql = "insert into transaction VALUES (?, ?, ?, ?, ?, ?);";
 
 		try {
 			preparedStatement = dbConnection.prepareStatement(sql);
 
-			preparedStatement.setInt(1, trans.getTransactionID());
-			preparedStatement.setFloat(2, trans.getAmountTransferred());
+			preparedStatement.setFloat(1, trans.getAmountTransferred());
 
 			if (trans.getDebitedAcc().equals("NULL")){
-				preparedStatement.setNull(3, Types.NULL);
+				preparedStatement.setNull(2, Types.NULL);
 			}
 			else{
-				preparedStatement.setString(3, trans.getDebitedAcc());
+				preparedStatement.setString(2, trans.getDebitedAcc());
 			}
 
 			if (trans.getCreditedAcc().equals("NULL")){
-				preparedStatement.setNull(4, Types.NULL);
+				preparedStatement.setNull(3, Types.NULL);
 			}
 			else{
-				preparedStatement.setString(4, trans.getCreditedAcc());
+				preparedStatement.setString(3, trans.getCreditedAcc());
 			}
 
 			try {
 				java.util.Date date1 = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(trans.getTransactionDate());
-				preparedStatement.setDate(5, new java.sql.Date(date1.getTime()));
+				preparedStatement.setDate(4, new java.sql.Date(date1.getTime()));
 			} catch (java.text.ParseException e) {
 				// Handle the exception here
 				e.printStackTrace();
 			}
-			preparedStatement.setString(6, trans.getTransactionType());
-			preparedStatement.setString(7, trans.getPaymentMtd());
+			preparedStatement.setString(5, trans.getTransactionType());
+			preparedStatement.setString(6, trans.getPaymentMtd());
 
 			// execute insert SQL stetement
 			preparedStatement.executeUpdate();

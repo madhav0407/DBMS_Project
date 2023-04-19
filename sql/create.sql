@@ -1,12 +1,11 @@
 create table login (
     pass varchar(100),
     customerID int,
-    username varchar(100),
-    constraint pk_login PRIMARY KEY (username)
+    constraint pk_login PRIMARY KEY (customerID)
 );
 
 create table customer (
-    customerID int,
+    customerID int AUTO_INCREMENT,
     c_name varchar(100),
     phone_num varchar(10),
     c_address varchar(1000),
@@ -17,8 +16,8 @@ create table customer (
 create table account (
     customerID int,
     accountNumber varchar(8),
-    balance decimal(19, 2) UNSIGNED,
-    minBalance decimal(19, 2) UNSIGNED,
+    balance decimal(19, 2),
+    minBalance decimal(19, 2),
     branchID int,
     accountStatus boolean,
     constraint pk_account PRIMARY KEY (accountNumber)
@@ -41,8 +40,8 @@ create table debitCard (
 );
 
 create table transaction (
-    transactionID int, 
-    amountTransferred decimal(19, 2) UNSIGNED,
+    transactionID int AUTO_INCREMENT, 
+    amountTransferred decimal(19, 2),
     debitedFromAcc varchar(8),
     creditedToAcc varchar(8), 
     transactionDate date,
