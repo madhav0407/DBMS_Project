@@ -17,8 +17,8 @@ create table customer (
 create table account (
     customerID int,
     accountNumber varchar(8),
-    balance decimal(19, 2),
-    minBalance decimal(19, 2),
+    balance decimal(19, 2) UNSIGNED,
+    minBalance decimal(19, 2) UNSIGNED,
     branchID int,
     accountStatus boolean,
     constraint pk_account PRIMARY KEY (accountNumber)
@@ -42,7 +42,7 @@ create table debitCard (
 
 create table transaction (
     transactionID int, 
-    amountTransferred decimal(19, 2),
+    amountTransferred decimal(19, 2) UNSIGNED,
     debitedFromAcc varchar(8),
     creditedToAcc varchar(8), 
     transactionDate date,

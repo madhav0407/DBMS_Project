@@ -7,6 +7,10 @@ public class Account {
     private int branchID;
     private int customerID;
     private boolean accountStatus; 
+
+    public String getAccountNum(){
+        return accountNum;
+    }
     
     public Account (String accountNum, float balance, float minBalance, int branchID, int customerID, boolean accountStatus) {
         this.accountNum = accountNum;
@@ -17,3 +21,4 @@ public class Account {
         this.accountStatus = accountStatus;
     } 
 }
+

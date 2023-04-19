@@ -19,8 +19,20 @@ public class TransactionDAO_JDBC implements TransactionDAO {
 
 			preparedStatement.setInt(1, trans.getTransactionID());
 			preparedStatement.setFloat(2, trans.getAmountTransferred());
-			preparedStatement.setString(3, trans.getDebitedAcc());
-			preparedStatement.setString(4, trans.getCreditedAcc());
+
+			if (trans.getDebitedAcc().equals("NULL")){
+				preparedStatement.setNull(3, Types.NULL);
+			}
+			else{
+				preparedStatement.setString(3, trans.getDebitedAcc());
+			}
+
+			if (trans.getCreditedAcc().equals("NULL")){
+				preparedStatement.setNull(4, Types.NULL);
+			}
+			else{
+				preparedStatement.setString(4, trans.getCreditedAcc());
+			}
 
 			try {
 				java.util.Date date1 = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(trans.getTransactionDate());
