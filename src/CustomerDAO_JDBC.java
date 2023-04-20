@@ -37,37 +37,9 @@ public class CustomerDAO_JDBC implements CustomerDAO {
         return true;
     }    
 
-    public Boolean deleteAccount(String accountNum){
-
-        PreparedStatement preparedStatement = null;
-        String sql;
-
-        sql = "update account set accountStatus = 0 where accountNumber = ?;";
-
-        try {
-            preparedStatement = dbConnection.prepareStatement(sql);
-
-            preparedStatement.setString(1, accountNum);
-
-            
-            int affected = preparedStatement.executeUpdate();
-            if (affected == 0) {
-                return false;
-                // Login failed
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return true;
-
+    public Boolean deleteAccount (Account account, AccountDAO adao) {
+        Boolean ans = adao.deleteAccount(account);
+        return ans;
     }
     public void addCustomer (Customer cust) {
         PreparedStatement preparedStatement = null;
@@ -91,7 +63,6 @@ public class CustomerDAO_JDBC implements CustomerDAO {
             
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("sqfasl");
             System.out.println(e.getMessage());
         }
 
@@ -103,5 +74,9 @@ public class CustomerDAO_JDBC implements CustomerDAO {
             System.out.println(e.getMessage());
         }
     }
-    public void createAccount(float balance, float minBalance) {}
+    public Account createAccount (int customerID, float balance, float minBalance, int branchID, AccountDAO adao) {
+        Account acc = new Account();
+        acc = adao.addAccount(customerID, balance, minBalance, branchID);
+        return acc;
+    }
 }

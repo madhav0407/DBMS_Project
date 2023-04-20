@@ -1,7 +1,6 @@
 public interface CustomerDAO {
     public void addCustomer(Customer cust);
-    public void createAccount(float balance, float minBalance); // AccountDAO to be passed in function
-    public Boolean deleteAccount(String accountNum);
+    public Account createAccount(int customerID, float balance, float minBalance, int branchID, AccountDAO adao); // AccountDAO to be passed in function
+    public Boolean deleteAccount(Account acc, AccountDAO adao);
     public Boolean accountLogin(String accountNum);
-    
 }

@@ -22,6 +22,8 @@ public class DAO_Factory{
 	TransactionDAO transactionDAO = null;
 	LoginDAO loginDAO = null;
 	CustomerDAO customerDAO = null;
+	AccountDAO accountDAO = null;
+	DebitCardDAO debitCardDAO = null;
 
 	boolean activeConnection = false;
 
@@ -86,6 +88,27 @@ public class DAO_Factory{
 		return customerDAO;
 	}
 
+	public AccountDAO getAccountDao() throws Exception
+	{
+		if( activeConnection == false )
+			throw new Exception("Connection not activated...");
+
+		if (accountDAO == null )
+			accountDAO = new AccountDAO_JDBC (dbconnection);
+
+		return accountDAO;
+	}
+
+	public DebitCardDAO getDebitCardDAO() throws Exception
+	{
+		if( activeConnection == false )
+			throw new Exception("Connection not activated...");
+
+		if (debitCardDAO == null )
+			debitCardDAO = new DebitCardDAO_JDBC (dbconnection);
+
+		return debitCardDAO;
+	}
 	public void deactivateConnection( TXN_STATUS txn_status )
 	{
 		// Okay to keep deactivating an already deactivated connection

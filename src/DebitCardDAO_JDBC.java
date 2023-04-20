@@ -67,12 +67,8 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             preparedStatement1.executeUpdate();
 
             // Getting the current date.
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = new Date();
-            String formattedDate = formatter.format(date);
 
-            Transaction trans = new Transaction(1, amount, card.getAccountNum(), "NULL", formattedDate, "withdraw",
-                    "card");
+            Transaction trans = new Transaction(amount, card.getAccountNum(), "NULL", "withdraw", "card");
 
             try {
                 TransactionDAO tdao = dao_Factory.getTransactionDAO();
@@ -123,15 +119,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             preparedStatement1.executeUpdate();
             preparedStatement2.executeUpdate();
 
-
-            // Getting the current date.
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = new Date();
-            String formattedDate = formatter.format(date);
-
-            Transaction trans = new Transaction(1, amount, card.getAccountNum(), acc.getAccountNum(), formattedDate, "transfer",
-                    "card");
-
+            Transaction trans = new Transaction(amount, card.getAccountNum(), acc.getAccountNum(), "transfer", "card");
             try {
                 TransactionDAO tdao = dao_Factory.getTransactionDAO();
                 tdao.addTransaction(trans);

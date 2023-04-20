@@ -86,7 +86,6 @@ public class LoginDAO_JDBC implements LoginDAO {
                 preparedStatement.executeUpdate();
                 return cid;
             } catch (SQLException e) {
-                System.out.println("sqfasl");
                 System.out.println(e.getMessage());
             }
         } catch (SQLException e) {
