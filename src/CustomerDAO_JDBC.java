@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 
 public class CustomerDAO_JDBC implements CustomerDAO {
     Connection dbConnection;
@@ -78,5 +80,41 @@ public class CustomerDAO_JDBC implements CustomerDAO {
         Account acc = new Account();
         acc = adao.addAccount(customerID, balance, minBalance, branchID);
         return acc;
+    }
+
+    public ArrayList<Transaction> getTransactions (Customer customer) {
+        PreparedStatement preparedStatement = null;
+        String sql;
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+        sql = "select DISTINCT transactionID, amountTransferred, debitedFromAcc, creditedToAcc, transactionDate, transactionType, paymentMtd from account a inner join transaction t on t.debitedFromAcc = a.accountNumber OR t.creditedToAcc = a.accountNumber where a.customerID = ? order by transactionID;";
+        try {
+            preparedStatement = dbConnection.prepareStatement(sql);
+            preparedStatement.setInt(1, customer.getCustomerID());
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+				Transaction trans = new Transaction(resultSet.getFloat(2), resultSet.getString(3), resultSet.getString(4),
+				resultSet.getString(6), resultSet.getString(7));
+				trans.setTransactionID(resultSet.getInt(1));
+
+				java.sql.Date date = resultSet.getDate(5);
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				String dateString = dateFormat.format(date);
+				trans.setTransactionDate(dateString);
+				transactions.add(trans);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return transactions;
     }
 }

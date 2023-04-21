@@ -6,7 +6,7 @@ public class LoginDAO_JDBC implements LoginDAO {
         dbConnection = dbconn;
     }
 
-    public Boolean customerLogin(int customerID, String pass) {
+    public Boolean customerLogin (int customerID, String pass) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -37,7 +37,7 @@ public class LoginDAO_JDBC implements LoginDAO {
         return true;
     }
 
-    public int signUp (String name, String phoneNumber, String address, String dob, String pass, CustomerDAO custDAO) {
+    public Customer signUp (String name, String phoneNumber, String address, String dob, String pass, CustomerDAO custDAO) {
         PreparedStatement preparedStatement = null;
         String sql;
         Statement stmt = null;
@@ -84,7 +84,7 @@ public class LoginDAO_JDBC implements LoginDAO {
                 preparedStatement.setInt(2, cid);
                 
                 preparedStatement.executeUpdate();
-                return cid;
+                customer.setCustomerID(cid);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
@@ -100,6 +100,6 @@ public class LoginDAO_JDBC implements LoginDAO {
             System.out.println(e.getMessage());
         }
 
-        return 0;
+        return customer;
     }
 }

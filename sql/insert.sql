@@ -24,5 +24,5 @@ insert into debitCard(accountNumber, cardNum, expiryDate, cvv, nameOnCard) VALUE
 ('00000001', '0000000000000001', '2026-11-7', 1,'Madhav Sood');
 
 insert into transaction(amountTransferred, debitedFromAcc, creditedToAcc, transactionDate, transactionType, paymentMtd) VALUES
-(1000.00, '00000000', '00000000', '2023-04-15', 'transfer', 'card'),
+(1000.00, '00000000', '00000001', '2023-04-15', 'transfer', 'card'),
 (500.00, NULL, '00000001', '2023-04-15', 'deposit', 'cash');

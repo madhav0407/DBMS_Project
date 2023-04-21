@@ -76,34 +76,29 @@ public class TransactionDAO_JDBC implements TransactionDAO {
 		PreparedStatement preparedStatement = null;
         String sql;
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-        //sql = "select * from transaction where (debitedFromAcc = ? OR creditedToAcc = ?) AND (transactionDate BETWEEN DATE(?) AND DATE(?));";
-		sql = "select * from transaction where (debitedFromAcc = ? OR creditedToAcc = ?) AND (transactionDate BETWEEN ? AND ?);";
+        sql = "select * from transaction where (debitedFromAcc = ? OR creditedToAcc = ?) AND (transactionDate BETWEEN DATE(?) AND DATE(?));";
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
             preparedStatement.setString(1, acc.getAccountNum());
             preparedStatement.setString(2, acc.getAccountNum());
-			
-			preparedStatement.setString(3, startDate);
-			preparedStatement.setString(4, endDate);
-			// try {
-			// 	java.util.Date date1 = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(startDate);
-			// 	System.out.println(new java.sql.Date(date1.getTime()));
-			// 	preparedStatement.setDate(3, new java.sql.Date(date1.getTime()));
-			// } catch (java.text.ParseException e) {
-			// 	// Handle the exception here
-			// 	e.printStackTrace();
-			// }
-			// try {
-			// 	java.util.Date date1 = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(endDate);
-			// 	preparedStatement.setDate(4, new java.sql.Date(date1.getTime()));
-			// } catch (java.text.ParseException e) {
-			// 	// Handle the exception here
-			// 	e.printStackTrace();
-			// }
+			try {
+				java.util.Date date1 = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+				preparedStatement.setDate(3, new java.sql.Date(date1.getTime()));
+			} catch (java.text.ParseException e) {
+				// Handle the exception here
+				e.printStackTrace();
+			}
+			try {
+				java.util.Date date1 = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+				preparedStatement.setDate(4, new java.sql.Date(date1.getTime()));
+			} catch (java.text.ParseException e) {
+				// Handle the exception here
+				e.printStackTrace();
+			}
             
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
 				Transaction trans = new Transaction(resultSet.getFloat(2), resultSet.getString(3), resultSet.getString(4),
 				resultSet.getString(6), resultSet.getString(7));
 				trans.setTransactionID(resultSet.getInt(1));

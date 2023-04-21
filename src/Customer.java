@@ -50,7 +50,8 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String Name, String phNum, String Address, String DOB) {
+    public Customer (String Name, String phNum, String Address, String DOB) {
+        customerID = -1;
         name = Name;
         phoneNum = phNum;
         address = Address;
