@@ -17,7 +17,6 @@ public class AccountDAO_JDBC implements AccountDAO {
 
             preparedStatement.setString(1, accNum);
 
-            
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 acc.setCustomerID(resultSet.getInt(1));
@@ -280,5 +279,42 @@ public class AccountDAO_JDBC implements AccountDAO {
     public ArrayList<Transaction> getTransactions (Account acc, String startDate, String endDate, TransactionDAO tdao) {
         ArrayList<Transaction> transactions = tdao.getTransactions(acc, startDate, endDate);
         return transactions;
+    }
+    
+    public float getSpending (Account acc) {
+        PreparedStatement preparedStatement = null;
+        String sql;
+        float amount = -1;
+        int flag = 0;
+        sql = "select transactionID, amountTransferred, debitedFromAcc, creditedToAcc from transaction where creditedToAcc = ? OR debitedFromAcc = ?;";
+        try {
+            preparedStatement = dbConnection.prepareStatement(sql);
+            preparedStatement.setString(1, acc.getAccountNum()); 
+            preparedStatement.setString(2, acc.getAccountNum()); 
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                if (flag == 0) {
+                    flag = 1;
+                    amount = 0;
+                }
+                if (acc.getAccountNum().equals(resultSet.getString(3))) {
+                    amount -= resultSet.getFloat(2);
+                } else {
+                    amount += resultSet.getFloat(2);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return amount;
     }
 }

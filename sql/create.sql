@@ -1,7 +1,27 @@
-create table login (
+create table customerlogin (
     pass varchar(100),
     customerID int,
-    constraint pk_login PRIMARY KEY (customerID)
+    constraint pk_customerlogin PRIMARY KEY (customerID)
+);
+
+create table adminlogin (
+    pass varchar(100),
+    adminID int,
+    constraint pk_adminlogin PRIMARY KEY (adminID)
+);
+
+create table admin (
+    adminID int AUTO_INCREMENT,
+    name varchar(100),
+    constraint pk_admin PRIMARY KEY (adminID)
+);
+
+create table branch (
+    branchID int,
+    managerID int,
+    branchLocation varchar(100),
+    branchContact varchar(100),
+    constraint pk_branch PRIMARY KEY (branchID)
 );
 
 create table customer (
@@ -21,13 +41,6 @@ create table account (
     branchID int,
     accountStatus boolean,
     constraint pk_account PRIMARY KEY (accountNumber)
-);
-
-create table branch (
-    branchID int,
-    branchLoc varchar(50),
-    branchContact varchar(10),
-    constraint pk_branch PRIMARY KEY (branchID)
 );
 
 create table debitCard (

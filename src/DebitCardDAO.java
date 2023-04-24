@@ -1,6 +1,5 @@
 public interface DebitCardDAO {
-    public void addCard (DebitCard card);
-    public void withdraw (DebitCard card, float amount);
-    public void transfer (DebitCard card, Account acc, float amount);
-    public void getSpending (DebitCard card);
+    public DebitCard addCard (DebitCard card);
+    public Transaction withdraw (DebitCard db, float amount, TransactionDAO tdao);
+    public Transaction transfer (DebitCard db, Account acc2, float amount, TransactionDAO tdao);
 }

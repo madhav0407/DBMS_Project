@@ -1,4 +1,7 @@
-import javax.print.attribute.standard.PrinterInfo;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class DebitCard {
     private String cardNumber;
@@ -43,18 +46,31 @@ public class DebitCard {
         accountNumber = accntnum;
     }
 
-    public void setCVV(int CVV) {
+    public void setCVV (int CVV) {
         cvv = CVV;
     }
 
     public DebitCard() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 5);
+        Date futureDate = calendar.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = formatter.format(futureDate);
+        this.expDate = formattedDate;
     }
 
-    public DebitCard(String cardNumber, String expDate, int cvv, String name, String accountNumber) {
+    public DebitCard (String cardNumber, String expDate, int cvv, String name, String accountNumber) {
         this.cardNumber = cardNumber;
         this.expDate = expDate;
         this.cvv = cvv;
         this.name = name;
         this.accountNumber = accountNumber;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 5);
+        Date futureDate = calendar.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = formatter.format(futureDate);
+        this.expDate = formattedDate;
     }
 }

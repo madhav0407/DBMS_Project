@@ -48,6 +48,7 @@ public class Customer {
     }
 
     public Customer() {
+        customerID = -1;
     }
 
     public Customer (String Name, String phNum, String Address, String DOB) {

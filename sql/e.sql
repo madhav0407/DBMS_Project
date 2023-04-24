@@ -1,7 +1,27 @@
-create table login (
+create table customerlogin (
     pass varchar(100),
     customerID int,
-    constraint pk_login PRIMARY KEY (customerID)
+    constraint pk_customerlogin PRIMARY KEY (customerID)
+);
+
+create table adminlogin (
+    pass varchar(100),
+    adminID int,
+    constraint pk_adminlogin PRIMARY KEY (adminID)
+);
+
+create table admin (
+    adminID int AUTO_INCREMENT,
+    name varchar(100),
+    constraint pk_admin PRIMARY KEY (adminID)
+);
+
+create table branch (
+    branchID int,
+    managerID int,
+    branchLocation varchar(100),
+    branchContact varchar(100),
+    constraint pk_branch PRIMARY KEY (branchID)
 );
 
 create table customer (
@@ -21,13 +41,6 @@ create table account (
     branchID int,
     accountStatus boolean,
     constraint pk_account PRIMARY KEY (accountNumber)
-);
-
-create table branch (
-    branchID int,
-    branchLoc varchar(50),
-    branchContact varchar(10),
-    constraint pk_branch PRIMARY KEY (branchID)
 );
 
 create table debitCard (
@@ -50,8 +63,14 @@ create table transaction (
     constraint pk_transaction PRIMARY KEY (transactionID)
 );
 
-alter table login 
+alter table customerlogin 
     add constraint fk_customerID FOREIGN KEY (customerID) REFERENCES customer(customerID);
+
+alter table adminlogin 
+    add constraint fk_adminID FOREIGN KEY (adminID) REFERENCES admin(adminID);
+
+alter table branch
+    add constraint fk_branch_adminID FOREIGN KEY (managerID) REFERENCES admin(adminID); 
 
 alter table account
     add constraint fk_accCustomerID FOREIGN KEY (customerID) REFERENCES customer(customerID);
@@ -68,10 +87,30 @@ alter table transaction
 alter table transaction
     add constraint fk_creditedAcc FOREIGN KEY (creditedToAcc) REFERENCES account(accountNumber);
 
-insert into branch(branchID, branchLoc, branchContact) VALUES
-(1, 'Rewa', '9829986134'),
-(2,'Mumbai', '9910093697'),
-(3, 'Goa', '9011496298');
+insert into admin(adminID, name) VALUES 
+(1, 'Vineet'),
+(2, 'Vihan'),
+(3, 'Varshith');
+
+insert into adminlogin(pass, adminID) VALUES
+("vineet", 1),
+("vihan", 2),
+("varshith", 3);
+
+insert into branch(branchID, managerID, branchLocation, branchContact) VALUES
+(1, 2, 'Rewa', '9829986134'),
+(2, 1, 'Mumbai', '9910093697'),
+(3, 3, 'Goa', '9011496298');
+
+insert into customer(c_name, phone_num, c_address, dob) VALUES
+('Shlok Agrawal', '9829986134', 'IIITB', '2002-12-26'),
+('Madhav Sood', '9910093697', 'IIITB', '2003-07-04'),
+('Nilay Kamat', '9011496298', 'IIITB', '1987-2-11');
+
+insert into customerlogin(pass, customerID) VALUES
+('shlok', 1),
+('madhav', 2),
+('nilay', 3);
 
 insert into customer(c_name, phone_num, c_address, dob) VALUES
 ('Shlok Agrawal', '9829986134', 'IIITB', '2002-12-26'),

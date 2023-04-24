@@ -8,22 +8,27 @@ public class CustomerDAO_JDBC implements CustomerDAO {
         dbConnection = dbconn;
     }
 
-    public Boolean accountLogin(String accountNum) {
+    public Customer getCustomer(int customerID) {
         PreparedStatement preparedStatement = null;
         String sql;
 
-        sql = "select * from account a where a.accountNumber = ?;";
-
+        sql = "select * from customer c where c.customerID = ?;";
+        Customer customer = new Customer();
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
 
-            preparedStatement.setString(1, accountNum);
+            preparedStatement.setInt(1, customerID);
 
-            
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {} else {
-                return false;
-                // Login failed
+            if (resultSet.next()) {
+                customer.setCustomerID(customerID);
+                customer.setName(resultSet.getString(2));
+                customer.setPhonenum(resultSet.getString(3));
+                customer.setAddress(resultSet.getString(4));
+                java.sql.Date date = resultSet.getDate(5);
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				String dateString = dateFormat.format(date);
+				customer.setDOB(dateString);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -36,14 +41,44 @@ public class CustomerDAO_JDBC implements CustomerDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return true;
+        return customer;
+    }
+    public Account accountLogin (String accountNum, AccountDAO adao) {
+        PreparedStatement preparedStatement = null;
+        String sql;
+
+        sql = "select * from account a where a.accountNumber = ?;";
+        Account acc = new Account();
+
+        try {
+            preparedStatement = dbConnection.prepareStatement(sql);
+
+            preparedStatement.setString(1, accountNum);
+
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                acc = adao.getAccount(accountNum);
+            } 
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return acc;
     }    
 
     public Boolean deleteAccount (Account account, AccountDAO adao) {
         Boolean ans = adao.deleteAccount(account);
         return ans;
     }
-    public void addCustomer (Customer cust) {
+    public Customer addCustomer (Customer cust) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -75,6 +110,31 @@ public class CustomerDAO_JDBC implements CustomerDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        PreparedStatement preparedStatement2 = null;
+        String sql2;
+
+        sql2 = "select count(*) from customer;";
+        int val = -1;
+        try {
+            preparedStatement2 = dbConnection.prepareStatement(sql2);
+            ResultSet resultSet = preparedStatement2.executeQuery();
+            if (resultSet.next()) {
+                val = resultSet.getInt(1); 
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            if (preparedStatement2 != null) {
+                preparedStatement2.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        cust.setCustomerID(val);
+        return cust;
     }
     public Account createAccount (int customerID, float balance, float minBalance, int branchID, AccountDAO adao) {
         Account acc = new Account();

@@ -1,14 +1,24 @@
-insert into branch(branchID, branchLoc, branchContact) VALUES
-(1, 'Rewa', '9829986134'),
-(2,'Mumbai', '9910093697'),
-(3, 'Goa', '9011496298');
+insert into admin(adminID, name) VALUES 
+(1, 'Vineet'),
+(2, 'Vihan'),
+(3, 'Varshith');
+
+insert into adminlogin(pass, adminID) VALUES
+("vineet", 1),
+("vihan", 2),
+("varshith", 3);
+
+insert into branch(branchID, managerID, branchLocation, branchContact) VALUES
+(1, 2, 'Rewa', '9829986134'),
+(2, 1, 'Mumbai', '9910093697'),
+(3, 3, 'Goa', '9011496298');
 
 insert into customer(c_name, phone_num, c_address, dob) VALUES
 ('Shlok Agrawal', '9829986134', 'IIITB', '2002-12-26'),
 ('Madhav Sood', '9910093697', 'IIITB', '2003-07-04'),
 ('Nilay Kamat', '9011496298', 'IIITB', '1987-2-11');
 
-insert into login(pass, customerID) VALUES
+insert into customerlogin(pass, customerID) VALUES
 ('shlok', 1),
 ('madhav', 2),
 ('nilay', 3);

@@ -1,5 +1,11 @@
-alter table login 
+alter table customerlogin 
     add constraint fk_customerID FOREIGN KEY (customerID) REFERENCES customer(customerID);
+
+alter table adminlogin 
+    add constraint fk_adminID FOREIGN KEY (adminID) REFERENCES admin(adminID);
+
+alter table branch
+    add constraint fk_branch_adminID FOREIGN KEY (managerID) REFERENCES admin(adminID); 
 
 alter table account
     add constraint fk_accCustomerID FOREIGN KEY (customerID) REFERENCES customer(customerID);
