@@ -1,6 +1,5 @@
 import java.sql.*;
 
-import com.mysql.cj.log.Log;
 /*
 	Methods to be called in the following order:
 
@@ -24,6 +23,7 @@ public class DAO_Factory{
 	CustomerDAO customerDAO = null;
 	AccountDAO accountDAO = null;
 	DebitCardDAO debitCardDAO = null;
+	AdminDAO adminDAO = null;
 
 	boolean activeConnection = false;
 
@@ -108,6 +108,16 @@ public class DAO_Factory{
 			debitCardDAO = new DebitCardDAO_JDBC (dbconnection);
 
 		return debitCardDAO;
+	}
+	public AdminDAO getAdminDAO() throws Exception
+	{
+		if( activeConnection == false )
+			throw new Exception("Connection not activated...");
+
+		if (adminDAO == null )
+			adminDAO = new AdminDAO_JDBC (dbconnection);
+
+		return adminDAO;
 	}
 	public void deactivateConnection( TXN_STATUS txn_status )
 	{

@@ -64,10 +64,11 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             }
             preparedStatement.setInt(4, numOfCards);
             preparedStatement.setString(5, db.getName());
-
+            
             // execute insert SQL stetement
             preparedStatement.executeUpdate();
-
+            db.setCardNum(cardNum);
+            db.setCVV(numOfCards);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -172,7 +173,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             preparedStatement1.setString(2, db.getAccountNum());
 
             preparedStatement2.setFloat(1, amount);
-            preparedStatement2.setString(2, db.getAccountNum());
+            preparedStatement2.setString(2, acc2.getAccountNum());
 
             preparedStatement1.executeUpdate();
             preparedStatement2.executeUpdate();

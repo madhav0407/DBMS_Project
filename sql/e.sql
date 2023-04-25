@@ -98,8 +98,8 @@ insert into adminlogin(pass, adminID) VALUES
 ("varshith", 3);
 
 insert into branch(branchID, managerID, branchLocation, branchContact) VALUES
-(1, 2, 'Rewa', '9829986134'),
-(2, 1, 'Mumbai', '9910093697'),
+(1, 1, 'Rewa', '9829986134'),
+(2, 2, 'Mumbai', '9910093697'),
 (3, 3, 'Goa', '9011496298');
 
 insert into customer(c_name, phone_num, c_address, dob) VALUES
@@ -123,10 +123,10 @@ insert into login(pass, customerID) VALUES
 ('nilay', 3);
 
 insert into account(customerID, accountNumber, balance, minBalance, branchID, accountStatus) VALUES
-(1, '00000000', 5234789.00, 10000.00, 1, 1),
-(2, '00000001', 8941893.00, 10000.00, 2, 1),
+(1, '00000000', 52347.00, 10000.00, 1, 1),
+(2, '00000001', 89418.00, 10000.00, 2, 1),
 (3, '00000002', 889.00, 100.00, 3, 1),
-(1, '00000003', 12348672.00, 0, 1, 1);
+(1, '00000003', 12348.00, 0, 1, 1);
 
 insert into debitCard(accountNumber, cardNum, expiryDate, cvv, nameOnCard) VALUES
 ('00000000', '0000000000000000', '2026-12-2', 0, 'Shlok Agrawal'),

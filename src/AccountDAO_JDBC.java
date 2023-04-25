@@ -21,7 +21,7 @@ public class AccountDAO_JDBC implements AccountDAO {
             if (resultSet.next()) {
                 acc.setCustomerID(resultSet.getInt(1));
                 acc.setAccountNumber(resultSet.getString(2));
-                acc.setBalance(resultSet.getFloat(3));
+                acc.setBalance(resultSet.getDouble(3));
                 acc.setMinBalance(resultSet.getFloat(4));
                 acc.setBranchID(resultSet.getInt(5));
                 acc.setAccountStatus(resultSet.getInt(6));
@@ -279,6 +279,14 @@ public class AccountDAO_JDBC implements AccountDAO {
     public ArrayList<Transaction> getTransactions (Account acc, String startDate, String endDate, TransactionDAO tdao) {
         ArrayList<Transaction> transactions = tdao.getTransactions(acc, startDate, endDate);
         return transactions;
+    }
+
+    public DebitCard addCard (DebitCardDAO ddao, Account acc, String nameOnCard) {
+        DebitCard debitCard = new DebitCard();
+        debitCard.setAccntNum(acc.getAccountNum());
+        debitCard.setName(nameOnCard);
+        debitCard = ddao.addCard(debitCard);
+        return debitCard;
     }
     
     public float getSpending (Account acc) {

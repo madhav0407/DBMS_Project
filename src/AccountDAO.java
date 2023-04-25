@@ -8,5 +8,6 @@ public interface AccountDAO {
     public Transaction deposit (Account acc, float amount, TransactionDAO tdao);
     public Transaction transfer (Account acc1, Account acc2, float amount, TransactionDAO tdao);
     public ArrayList<Transaction> getTransactions (Account acc, String startDate, String endDate, TransactionDAO tdao);
+    public DebitCard addCard (DebitCardDAO ddao, Account acc, String nameOnCard);
     public float getSpending (Account acc);
 }

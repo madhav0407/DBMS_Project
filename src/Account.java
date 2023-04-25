@@ -1,6 +1,6 @@
 public class Account {
     private String accountNum;
-    private float balance;
+    private double balance;
     private float minBalance;
     private int branchID;
     private int customerID;
@@ -9,7 +9,7 @@ public class Account {
     public String getAccountNum(){
         return accountNum;
     }
-    public float getBalance(){
+    public double getBalance(){
         return balance;
     }
     public float getMinBalance(){
@@ -25,7 +25,7 @@ public class Account {
         return accountStatus;
     }
     
-    public Account (String accountNum, float balance, float minBalance, int branchID, int customerID, int accountStatus) {
+    public Account (String accountNum, double balance, float minBalance, int branchID, int customerID, int accountStatus) {
         this.accountNum = accountNum;
         this.balance = balance;
         this.minBalance = minBalance;
@@ -40,7 +40,7 @@ public class Account {
     public void setAccountNumber (String acn) {
         accountNum = acn;
     }
-    public void setBalance (float bal) {
+    public void setBalance (double bal) {
         balance = bal;
     }
     public void setMinBalance (float mb) {

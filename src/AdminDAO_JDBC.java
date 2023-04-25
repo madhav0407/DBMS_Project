@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 
-public class AdminDAO_JDBC {
+public class AdminDAO_JDBC implements AdminDAO{
     Connection dbConnection;
     public AdminDAO_JDBC(Connection dbconn) {
         dbConnection = dbconn;
@@ -89,7 +89,7 @@ public class AdminDAO_JDBC {
         return admin;
     }
 
-    public ArrayList<Account> getTransactions (Admin admin, AccountDAO adao){
+    public ArrayList<Account> getAccounts (Admin admin, AccountDAO adao){
         PreparedStatement preparedStatement = null;
         String sql;
 		ArrayList<Account> accounts = new ArrayList<Account>();
