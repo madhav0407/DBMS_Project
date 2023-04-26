@@ -151,7 +151,7 @@ public class DAO_demo {
                             continue;
                         }
                         obj.AdminMenu(adm, idao, adao, sc);
-                        // daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
+                        daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
                     } catch (Exception e) {
                         daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
                         e.printStackTrace();
