@@ -2,11 +2,12 @@ import java.sql.*;
 
 public class LoginDAO_JDBC implements LoginDAO {
     Connection dbConnection;
+
     public LoginDAO_JDBC(Connection dbconn) {
         dbConnection = dbconn;
     }
 
-    public Customer customerLogin (int customerID, String pass, CustomerDAO cdao) {
+    public Customer customerLogin(int customerID, String pass, CustomerDAO cdao) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -18,7 +19,7 @@ public class LoginDAO_JDBC implements LoginDAO {
 
             preparedStatement.setInt(1, customerID);
             preparedStatement.setString(2, pass);
-            
+
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 customer = cdao.getCustomer(customerID);
@@ -37,11 +38,12 @@ public class LoginDAO_JDBC implements LoginDAO {
         return customer;
     }
 
-    public Customer customerSignUp (String name, String phoneNumber, String address, String dob, String pass, CustomerDAO custDAO) {
+    public Customer customerSignUp(String name, String phoneNumber, String address, String dob, String pass,
+            CustomerDAO custDAO) {
         PreparedStatement preparedStatement = null;
         String sql;
         Statement stmt = null;
-    
+
         Customer customer = new Customer(name, phoneNumber, address, dob);
         custDAO.addCustomer(customer);
 
@@ -57,10 +59,10 @@ public class LoginDAO_JDBC implements LoginDAO {
 
             try {
                 preparedStatement = dbConnection.prepareStatement(sql);
-                
+
                 preparedStatement.setString(1, pass);
                 preparedStatement.setInt(2, cid);
-                
+
                 preparedStatement.executeUpdate();
                 customer.setCustomerID(cid);
             } catch (SQLException e) {
@@ -68,7 +70,7 @@ public class LoginDAO_JDBC implements LoginDAO {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            
+
         }
 
         try {
@@ -82,7 +84,7 @@ public class LoginDAO_JDBC implements LoginDAO {
         return customer;
     }
 
-    public Admin adminLogin (int adminID, String pass, AdminDAO adminDAO) {
+    public Admin adminLogin(int adminID, String pass, AdminDAO adminDAO) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -94,7 +96,7 @@ public class LoginDAO_JDBC implements LoginDAO {
 
             preparedStatement.setInt(1, adminID);
             preparedStatement.setString(2, pass);
-            
+
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 admin = adminDAO.getAdmin(adminID);
@@ -113,11 +115,11 @@ public class LoginDAO_JDBC implements LoginDAO {
         return admin;
     }
 
-    public Admin adminSignUp (String name, String pass, AdminDAO adminDAO) {
+    public Admin adminSignUp(String name, String pass, AdminDAO adminDAO) {
         PreparedStatement preparedStatement = null;
         String sql;
         Statement stmt = null;
-    
+
         Admin admin = new Admin(name);
         adminDAO.addAdmin(admin);
 
@@ -133,10 +135,10 @@ public class LoginDAO_JDBC implements LoginDAO {
 
             try {
                 preparedStatement = dbConnection.prepareStatement(sql);
-                
+
                 preparedStatement.setString(1, pass);
                 preparedStatement.setInt(2, aid);
-                
+
                 preparedStatement.executeUpdate();
                 admin.setAdminID(aid);
             } catch (SQLException e) {
@@ -144,7 +146,7 @@ public class LoginDAO_JDBC implements LoginDAO {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            
+
         }
 
         try {

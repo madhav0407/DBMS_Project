@@ -45,7 +45,7 @@ public class DebitCard {
         accountNumber = accntnum;
     }
 
-    public void setCVV (int CVV) {
+    public void setCVV(int CVV) {
         cvv = CVV;
     }
 
@@ -58,7 +58,7 @@ public class DebitCard {
         this.expDate = formattedDate;
     }
 
-    public DebitCard (String cardNumber, String expDate, int cvv, String name, String accountNumber) {
+    public DebitCard(String cardNumber, String expDate, int cvv, String name, String accountNumber) {
         this.cardNumber = cardNumber;
         this.expDate = expDate;
         this.cvv = cvv;

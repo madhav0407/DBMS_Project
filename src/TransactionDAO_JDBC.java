@@ -20,15 +20,15 @@ public class TransactionDAO_JDBC implements TransactionDAO {
 
 			preparedStatement.setFloat(1, trans.getAmountTransferred());
 
-			if (trans.getDebitedAcc().equals("NULL")){
+			if (trans.getDebitedAcc().equals("NULL")) {
 				preparedStatement.setNull(2, Types.NULL);
-			} else{
+			} else {
 				preparedStatement.setString(2, trans.getDebitedAcc());
 			}
 
-			if (trans.getCreditedAcc().equals("NULL")){
+			if (trans.getCreditedAcc().equals("NULL")) {
 				preparedStatement.setNull(3, Types.NULL);
-			} else{
+			} else {
 				preparedStatement.setString(3, trans.getCreditedAcc());
 			}
 
@@ -50,17 +50,17 @@ public class TransactionDAO_JDBC implements TransactionDAO {
 		}
 
 		try {
-            stmt = dbConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM transaction");
-            int tid = -1;
-            while (rs.next()) {
-                tid = rs.getInt(1);
-            }
+			stmt = dbConnection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM transaction");
+			int tid = -1;
+			while (rs.next()) {
+				tid = rs.getInt(1);
+			}
 			trans.setTransactionID(tid);
 			return trans;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 
 		try {
 			if (preparedStatement != null) {
@@ -72,15 +72,15 @@ public class TransactionDAO_JDBC implements TransactionDAO {
 		return trans;
 	}
 
-	public ArrayList<Transaction> getTransactions (Account acc, String startDate, String endDate) {
+	public ArrayList<Transaction> getTransactions(Account acc, String startDate, String endDate) {
 		PreparedStatement preparedStatement = null;
-        String sql;
+		String sql;
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-        sql = "select * from transaction where (debitedFromAcc = ? OR creditedToAcc = ?) AND (transactionDate BETWEEN DATE(?) AND DATE(?));";
-        try {
-            preparedStatement = dbConnection.prepareStatement(sql);
-            preparedStatement.setString(1, acc.getAccountNum());
-            preparedStatement.setString(2, acc.getAccountNum());
+		sql = "select * from transaction where (debitedFromAcc = ? OR creditedToAcc = ?) AND (transactionDate BETWEEN DATE(?) AND DATE(?));";
+		try {
+			preparedStatement = dbConnection.prepareStatement(sql);
+			preparedStatement.setString(1, acc.getAccountNum());
+			preparedStatement.setString(2, acc.getAccountNum());
 			try {
 				java.util.Date date1 = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(startDate);
 				preparedStatement.setDate(3, new java.sql.Date(date1.getTime()));
@@ -95,12 +95,13 @@ public class TransactionDAO_JDBC implements TransactionDAO {
 				// Handle the exception here
 				e.printStackTrace();
 			}
-            
-            ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
-				Transaction trans = new Transaction(resultSet.getFloat(2), resultSet.getString(3), resultSet.getString(4),
-				resultSet.getString(6), resultSet.getString(7));
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Transaction trans = new Transaction(resultSet.getFloat(2), resultSet.getString(3),
+						resultSet.getString(4),
+						resultSet.getString(6), resultSet.getString(7));
 				trans.setTransactionID(resultSet.getInt(1));
 
 				java.sql.Date date = resultSet.getDate(5);
@@ -108,18 +109,18 @@ public class TransactionDAO_JDBC implements TransactionDAO {
 				String dateString = dateFormat.format(date);
 				trans.setTransactionDate(dateString);
 				transactions.add(trans);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 
-        try {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return transactions;
+		try {
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return transactions;
 	}
 }

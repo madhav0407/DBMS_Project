@@ -4,52 +4,72 @@ public class Account {
     private float minBalance;
     private int branchID;
     private int customerID;
-    private int accountStatus; 
+    private int accountStatus;
 
-    public String getAccountNum(){
+    public String getAccountNum() {
         return accountNum;
     }
-    public double getBalance(){
+
+    public double getBalance() {
         return balance;
     }
-    public float getMinBalance(){
+
+    public float getMinBalance() {
         return minBalance;
     }
-    public int getBranchID(){
+
+    public int getBranchID() {
         return branchID;
     }
-    public int getCustomerID(){
+
+    public int getCustomerID() {
         return customerID;
     }
-    public int getAccountStatus(){
+
+    public int getAccountStatus() {
         return accountStatus;
     }
-    
-    public Account (String accountNum, double balance, float minBalance, int branchID, int customerID, int accountStatus) {
+
+    public Account(String accountNum, double balance, float minBalance, int branchID, int customerID,
+            int accountStatus) {
         this.accountNum = accountNum;
         this.balance = balance;
         this.minBalance = minBalance;
         this.branchID = branchID;
         this.customerID = customerID;
         this.accountStatus = accountStatus;
-    } 
-    public Account () {} 
-    public void setCustomerID (int cid) {
+    }
+
+    public Account() {
+    }
+
+    public void setCustomerID(int cid) {
         customerID = cid;
     }
-    public void setAccountNumber (String acn) {
+
+    public void setAccountNumber(String acn) {
         accountNum = acn;
     }
-    public void setBalance (double bal) {
+
+    public void setBalance(double bal) {
         balance = bal;
     }
-    public void setMinBalance (float mb) {
+
+    public void setMinBalance(float mb) {
         minBalance = mb;
     }
-    public void setBranchID (int bid) {
+
+    public void setBranchID(int bid) {
         branchID = bid;
     }
-    public void setAccountStatus (int st) {
+
+    public void setAccountStatus(int st) {
         accountStatus = st;
+    }
+
+    public void printAll() {
+        System.out.println("Account Number: " + accountNum + "  Balance : " + balance + "  Min Balance : " + minBalance
+                + "  Branch ID : " + branchID + "  Customer ID : " + customerID + "  Account Status : "
+                + accountStatus);
     }
 }

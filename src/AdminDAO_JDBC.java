@@ -1,8 +1,9 @@
 import java.sql.*;
 import java.util.ArrayList;
 
-public class AdminDAO_JDBC implements AdminDAO{
+public class AdminDAO_JDBC implements AdminDAO {
     Connection dbConnection;
+
     public AdminDAO_JDBC(Connection dbconn) {
         dbConnection = dbconn;
     }
@@ -36,9 +37,9 @@ public class AdminDAO_JDBC implements AdminDAO{
             System.out.println(e.getMessage());
         }
         return admin;
-    }    
+    }
 
-    public Admin addAdmin (Admin admin) {
+    public Admin addAdmin(Admin admin) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -48,7 +49,7 @@ public class AdminDAO_JDBC implements AdminDAO{
             preparedStatement = dbConnection.prepareStatement(sql);
 
             preparedStatement.setString(1, admin.getName());
-            
+
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -72,7 +73,7 @@ public class AdminDAO_JDBC implements AdminDAO{
             preparedStatement2 = dbConnection.prepareStatement(sql2);
             ResultSet resultSet = preparedStatement2.executeQuery();
             if (resultSet.next()) {
-                val = resultSet.getInt(1); 
+                val = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -89,20 +90,20 @@ public class AdminDAO_JDBC implements AdminDAO{
         return admin;
     }
 
-    public ArrayList<Account> getAccounts (Admin admin, AccountDAO adao){
+    public ArrayList<Account> getAccounts(Admin admin, AccountDAO adao) {
         PreparedStatement preparedStatement = null;
         String sql;
-		ArrayList<Account> accounts = new ArrayList<Account>();
+        ArrayList<Account> accounts = new ArrayList<Account>();
 
         sql = "select accountNumber from account a, branch b where a.branchID = b.branchID and b.managerID = ?;";
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
             preparedStatement.setInt(1, admin.getAdminID());
-            
+
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-				accounts.add(adao.getAccount(resultSet.getString(1)));
+                accounts.add(adao.getAccount(resultSet.getString(1)));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

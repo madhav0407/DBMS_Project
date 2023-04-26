@@ -1,12 +1,14 @@
 import java.util.ArrayList;
 import java.sql.*;
+
 public class AccountDAO_JDBC implements AccountDAO {
     Connection dbConnection;
-    public AccountDAO_JDBC (Connection dbconn) {
+
+    public AccountDAO_JDBC(Connection dbconn) {
         dbConnection = dbconn;
     }
 
-    public Account getAccount (String accNum) {
+    public Account getAccount(String accNum) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -39,7 +41,8 @@ public class AccountDAO_JDBC implements AccountDAO {
         }
         return acc;
     } // for creating an account object for transfer and all
-    public float getBalance (Account acc) {
+
+    public float getBalance(Account acc) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -50,7 +53,7 @@ public class AccountDAO_JDBC implements AccountDAO {
             preparedStatement.setString(1, acc.getAccountNum());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                balance = resultSet.getFloat(1); 
+                balance = resultSet.getFloat(1);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -65,18 +68,18 @@ public class AccountDAO_JDBC implements AccountDAO {
         }
         return balance;
     }
-    public boolean deleteAccount (Account acc) {
+
+    public boolean deleteAccount(Account acc) {
         PreparedStatement preparedStatement = null;
         String sql;
-        
+
         sql = "update account set accountStatus = 0 where accountNumber = ?;";
-        
+
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
-            
+
             preparedStatement.setString(1, acc.getAccountNum());
-            
-            
+
             int affected = preparedStatement.executeUpdate();
             if (affected == 0) {
                 return false;
@@ -85,7 +88,7 @@ public class AccountDAO_JDBC implements AccountDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
         try {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -95,7 +98,8 @@ public class AccountDAO_JDBC implements AccountDAO {
         }
         return true;
     }
-    private int getNumberOfAccounts () {
+
+    private int getNumberOfAccounts() {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -105,7 +109,7 @@ public class AccountDAO_JDBC implements AccountDAO {
             preparedStatement = dbConnection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                val = resultSet.getInt(1); 
+                val = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -120,7 +124,8 @@ public class AccountDAO_JDBC implements AccountDAO {
         }
         return val;
     }
-    public Account addAccount (int customerID, float balance, float minBalance, int branchID) {
+
+    public Account addAccount(int customerID, float balance, float minBalance, int branchID) {
         PreparedStatement preparedStatement = null;
         String sql;
         Account acc = new Account();
@@ -163,18 +168,19 @@ public class AccountDAO_JDBC implements AccountDAO {
         }
         return acc;
     }
-    public Transaction withdraw (Account acc, float amount, TransactionDAO tdao) {
+
+    public Transaction withdraw(Account acc, float amount, TransactionDAO tdao) {
         PreparedStatement preparedStatement = null;
         String sql;
-        Transaction tra = new Transaction(); 
+        Transaction tra = new Transaction();
         sql = "update account set balance = balance - ? where accountNumber = ?;";
-        
+
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
-            
+
             preparedStatement.setString(2, acc.getAccountNum());
-            preparedStatement.setFloat(1, amount); 
-            
+            preparedStatement.setFloat(1, amount);
+
             int affected = preparedStatement.executeUpdate();
             if (affected == 0) {
                 return tra;
@@ -183,30 +189,31 @@ public class AccountDAO_JDBC implements AccountDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
         try {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
         Transaction trans = new Transaction(amount, acc.getAccountNum(), "NULL", "withdraw", "account");
         trans = tdao.addTransaction(trans);
         return trans;
     }
-    public Transaction deposit (Account acc, float amount, TransactionDAO tdao) {
+
+    public Transaction deposit(Account acc, float amount, TransactionDAO tdao) {
         PreparedStatement preparedStatement = null;
         String sql;
-        Transaction tra = new Transaction(); 
+        Transaction tra = new Transaction();
         sql = "update account set balance = balance + ? where accountNumber = ?;";
-        
+
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
-            
+
             preparedStatement.setString(2, acc.getAccountNum());
-            preparedStatement.setFloat(1, amount); 
-            
+            preparedStatement.setFloat(1, amount);
+
             int affected = preparedStatement.executeUpdate();
             if (affected == 0) {
                 return tra;
@@ -215,20 +222,20 @@ public class AccountDAO_JDBC implements AccountDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
         try {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
         Transaction trans = new Transaction(amount, "NULL", acc.getAccountNum(), "deposit", "cash");
         trans = tdao.addTransaction(trans);
         return trans;
     }
-    
-    public Transaction transfer (Account acc1, Account acc2, float amount, TransactionDAO tdao) {
+
+    public Transaction transfer(Account acc1, Account acc2, float amount, TransactionDAO tdao) {
         PreparedStatement preparedStatement1 = null;
         String sql1;
         sql1 = "update account set balance = balance - ? where accountNumber = ?;";
@@ -252,7 +259,8 @@ public class AccountDAO_JDBC implements AccountDAO {
             preparedStatement1.executeUpdate();
             preparedStatement2.executeUpdate();
 
-            Transaction trans = new Transaction(amount, acc1.getAccountNum(), acc2.getAccountNum(), "transfer", "account");
+            Transaction trans = new Transaction(amount, acc1.getAccountNum(), acc2.getAccountNum(), "transfer",
+                    "account");
             trans = tdao.addTransaction(trans);
             return trans;
         } catch (SQLException e) {
@@ -265,7 +273,7 @@ public class AccountDAO_JDBC implements AccountDAO {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }        
+        }
 
         try {
             if (preparedStatement2 != null) {
@@ -273,23 +281,24 @@ public class AccountDAO_JDBC implements AccountDAO {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }  
+        }
         return tra;
     }
-    public ArrayList<Transaction> getTransactions (Account acc, String startDate, String endDate, TransactionDAO tdao) {
+
+    public ArrayList<Transaction> getTransactions(Account acc, String startDate, String endDate, TransactionDAO tdao) {
         ArrayList<Transaction> transactions = tdao.getTransactions(acc, startDate, endDate);
         return transactions;
     }
 
-    public DebitCard addCard (DebitCardDAO ddao, Account acc, String nameOnCard) {
+    public DebitCard addCard(DebitCardDAO ddao, Account acc, String nameOnCard) {
         DebitCard debitCard = new DebitCard();
         debitCard.setAccntNum(acc.getAccountNum());
         debitCard.setName(nameOnCard);
         debitCard = ddao.addCard(debitCard);
         return debitCard;
     }
-    
-    public float getSpending (Account acc) {
+
+    public float getSpending(Account acc) {
         PreparedStatement preparedStatement = null;
         String sql;
         float amount = -1;
@@ -297,8 +306,8 @@ public class AccountDAO_JDBC implements AccountDAO {
         sql = "select transactionID, amountTransferred, debitedFromAcc, creditedToAcc from transaction where creditedToAcc = ? OR debitedFromAcc = ?;";
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
-            preparedStatement.setString(1, acc.getAccountNum()); 
-            preparedStatement.setString(2, acc.getAccountNum()); 
+            preparedStatement.setString(1, acc.getAccountNum());
+            preparedStatement.setString(2, acc.getAccountNum());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

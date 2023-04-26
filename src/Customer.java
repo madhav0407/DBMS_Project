@@ -49,7 +49,7 @@ public class Customer {
         customerID = -1;
     }
 
-    public Customer (String Name, String phNum, String Address, String DOB) {
+    public Customer(String Name, String phNum, String Address, String DOB) {
         customerID = -1;
         name = Name;
         phoneNum = phNum;

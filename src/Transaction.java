@@ -8,40 +8,63 @@ public class Transaction {
     private String creditedToAccount;
     private String transactionDate;
     private String transactionType;
-    private String paymentMethod; 
+    private String paymentMethod;
 
-    public Transaction (float amountTransferred, String debitedFromAccount, String creditedToAccount,
-    String transactionType, String paymentMethod) {
+    public Transaction(float amountTransferred, String debitedFromAccount, String creditedToAccount,
+            String transactionType, String paymentMethod) {
         transactionID = -1;
         this.amountTransferred = amountTransferred;
         this.debitedFromAccount = debitedFromAccount;
         this.creditedToAccount = creditedToAccount;
         this.transactionType = transactionType;
-        this.paymentMethod = paymentMethod;                         
+        this.paymentMethod = paymentMethod;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         String formattedDate = formatter.format(date);
         this.transactionDate = formattedDate;
     }
+
     public Transaction() {
         transactionID = -1;
     }
-    
-    public int getTransactionID() { return transactionID; }
-    public float getAmountTransferred() { return amountTransferred; }
-    public String getDebitedAcc() { return debitedFromAccount; }
-    public String getCreditedAcc() { return creditedToAccount; }
-    public String getTransactionDate() { return transactionDate; }
-    public String getTransactionType() { return transactionType; }
-    public String getPaymentMtd() { return paymentMethod; }
-    public void setTransactionID (int tid) {
+
+    public int getTransactionID() {
+        return transactionID;
+    }
+
+    public float getAmountTransferred() {
+        return amountTransferred;
+    }
+
+    public String getDebitedAcc() {
+        return debitedFromAccount;
+    }
+
+    public String getCreditedAcc() {
+        return creditedToAccount;
+    }
+
+    public String getTransactionDate() {
+        return transactionDate;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public String getPaymentMtd() {
+        return paymentMethod;
+    }
+
+    public void setTransactionID(int tid) {
         transactionID = tid;
     }
-    public void setTransactionDate (String dat) {
+
+    public void setTransactionDate(String dat) {
         transactionDate = dat;
     }
-    
-    public void printAll () {
+
+    public void printAll() {
         System.out.println("Transaction ID: " + this.transactionID);
         System.out.println("Amount Transferred: " + this.amountTransferred);
         System.out.println("Debited From Account: " + this.debitedFromAccount);

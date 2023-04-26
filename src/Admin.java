@@ -19,11 +19,11 @@ public class Admin {
         adminID = aid;
     }
 
-    public Admin() {    
+    public Admin() {
         adminID = -1;
     }
 
-    public Admin (String Name) {
+    public Admin(String Name) {
         adminID = -1;
         name = Name;
     }
