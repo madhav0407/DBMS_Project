@@ -45,17 +45,18 @@ public class CustomerDAO_JDBC implements CustomerDAO {
         return customer;
     }
 
-    public Account accountLogin(String accountNum, AccountDAO adao) {
+    public Account accountLogin (Customer cust, String accountNum, AccountDAO adao) {
         PreparedStatement preparedStatement = null;
         String sql;
 
-        sql = "select * from account a where a.accountNumber = ?;";
+        sql = "select * from account a where a.accountNumber = ? and a.customerID = ?;";
         Account acc = new Account();
 
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
 
             preparedStatement.setString(1, accountNum);
+            preparedStatement.setInt(2, cust.getCustomerID());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

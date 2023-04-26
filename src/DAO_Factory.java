@@ -26,6 +26,7 @@ public class DAO_Factory {
 	AccountDAO accountDAO = null;
 	DebitCardDAO debitCardDAO = null;
 	AdminDAO adminDAO = null;
+	BranchDAO branchDAO = null;
 
 	boolean activeConnection = false;
 
@@ -117,6 +118,15 @@ public class DAO_Factory {
 
 		return adminDAO;
 	}
+	public BranchDAO getBranchDAO() throws Exception {
+		if (activeConnection == false)
+			throw new Exception("Connection not activated...");
+
+		if (branchDAO == null)
+			branchDAO = new BranchDAO_JDBC(dbconnection);
+
+		return branchDAO;
+	}
 
 	public void deactivateConnection(TXN_STATUS txn_status) {
 		// Okay to keep deactivating an already deactivated connection
@@ -139,6 +149,7 @@ public class DAO_Factory {
 				accountDAO = null;
 				debitCardDAO = null;
 				adminDAO = null;	
+				branchDAO = null;
 			} catch (SQLException ex) {
 				// handle any errors
 				System.out.println("SQLException: " + ex.getMessage());

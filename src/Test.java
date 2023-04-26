@@ -18,14 +18,20 @@ public class Test {
                 AccountDAO adao = daoFactory.getAccountDao();
                 DebitCardDAO ddao = daoFactory.getDebitCardDAO();
                 AdminDAO idao = daoFactory.getAdminDAO();
+                BranchDAO bdao = daoFactory.getBranchDAO();
 
-                Account acc = adao.getAccount("00000002");
-                Account acc1 = adao.getAccount("00000000");
-                DebitCard dc = adao.addCard(ddao, acc, "nilay"); 
-                Transaction trans = ddao.transfer(dc, acc1, 10, tdao);
-                //Transaction trans = ddao.withdraw(dc, 10, tdao);
+                ArrayList<Branch> br = bdao.getBranches();
+                for (int i = 0; i < br.size(); i++) {
+                    br.get(i).printAll();
+                }
 
-                trans.printAll();
+                // Account acc = adao.getAccount("00000002");
+                // Account acc1 = adao.getAccount("00000000");
+                // DebitCard dc = adao.addCard(ddao, acc, "nilay"); 
+                // Transaction trans = ddao.transfer(dc, acc1, 10, tdao);
+                // //Transaction trans = ddao.withdraw(dc, 10, tdao);
+
+                // trans.printAll();
                 // if (acc.getAccountNum() == null) {
                 //     System.out.println(acc.getAccountNum() + " " + acc.getAccountStatus() + " " + acc.getBalance() + " " + acc.getBranchID() + " " + acc.getCustomerID() + " " + acc.getMinBalance());
                 // }
@@ -64,6 +70,10 @@ public class Test {
                 // System.out.println(cust.getName() + " " + cust.getCustomerID() + " " + cust.getDOB());
                 // Admin ad = ldao.adminLogin(5, "shlok", idao);
                 // System.out.println(ad.getAdminID() + " " + ad.getName());
+                // Customer cust = cdao.getCustomer(2);
+                // Account ac = cdao.accountLogin(cust, "00000000", adao);
+                // ac.printAll();
+
 
                 
                 daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);

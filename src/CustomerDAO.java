@@ -10,7 +10,7 @@ public interface CustomerDAO {
 
     public Boolean deleteAccount(Account acc, AccountDAO adao);
 
-    public Account accountLogin(String accountNum, AccountDAO adao);
+    public Account accountLogin(Customer cust, String accountNum, AccountDAO adao);
 
     public ArrayList<Transaction> getTransactions(Customer customer);
 }
