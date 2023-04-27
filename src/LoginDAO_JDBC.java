@@ -45,33 +45,36 @@ public class LoginDAO_JDBC implements LoginDAO {
         Statement stmt = null;
 
         Customer customer = new Customer(name, phoneNumber, address, dob);
-        custDAO.addCustomer(customer);
+        customer = custDAO.addCustomer(customer);
+        // if(customer.getCustomerID()==-1){
+        // return customer;
+        // }
+
+        // try {
+        // stmt = dbConnection.createStatement();
+        // ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM customer");
+        // int cid = -1;
+        // while (rs.next()) {
+        // cid = rs.getInt(1);
+        // }
+
+        sql = "insert into customerlogin(pass, customerID) VALUES (?, ?);";
 
         try {
-            stmt = dbConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM customer");
-            int cid = -1;
-            while (rs.next()) {
-                cid = rs.getInt(1);
-            }
+            preparedStatement = dbConnection.prepareStatement(sql);
 
-            sql = "insert into customerlogin(pass, customerID) VALUES (?, ?);";
+            preparedStatement.setString(1, pass);
+            preparedStatement.setInt(2, customer.getCustomerID());
 
-            try {
-                preparedStatement = dbConnection.prepareStatement(sql);
-
-                preparedStatement.setString(1, pass);
-                preparedStatement.setInt(2, cid);
-
-                preparedStatement.executeUpdate();
-                customer.setCustomerID(cid);
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
+            preparedStatement.executeUpdate();
+            // customer.setCustomerID(customer.getCustomerID());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-
         }
+        // } catch (SQLException e) {
+        // System.out.println(e.getMessage());
+
+        // }
 
         try {
             if (preparedStatement != null) {
@@ -80,6 +83,7 @@ public class LoginDAO_JDBC implements LoginDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        System.out.println(customer.getCustomerID());
 
         return customer;
     }

@@ -45,7 +45,7 @@ public class CustomerDAO_JDBC implements CustomerDAO {
         return customer;
     }
 
-    public Account accountLogin (Customer cust, String accountNum, AccountDAO adao) {
+    public Account accountLogin(Customer cust, String accountNum, AccountDAO adao) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -98,7 +98,10 @@ public class CustomerDAO_JDBC implements CustomerDAO {
                 preparedStatement.setDate(4, new java.sql.Date(date1.getTime()));
             } catch (java.text.ParseException e) {
                 // Handle the exception here
+                int val = -1;
+                cust.setCustomerID(val);
                 e.printStackTrace();
+                return cust;
             }
 
             preparedStatement.executeUpdate();
