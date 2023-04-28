@@ -39,16 +39,16 @@ public class LoginDAO_JDBC implements LoginDAO {
     }
 
     public Customer customerSignUp(String name, String phoneNumber, String address, String dob, String pass,
-            CustomerDAO custDAO) {
+    CustomerDAO custDAO) {
         PreparedStatement preparedStatement = null;
         String sql;
         Statement stmt = null;
 
         Customer customer = new Customer(name, phoneNumber, address, dob);
         customer = custDAO.addCustomer(customer);
-        // if(customer.getCustomerID()==-1){
-        // return customer;
-        // }
+        if (customer.getCustomerID() == -1) {
+            return customer;
+        }
 
         // try {
         // stmt = dbConnection.createStatement();
@@ -83,7 +83,7 @@ public class LoginDAO_JDBC implements LoginDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println(customer.getCustomerID());
+        //System.out.println(customer.getCustomerID());
 
         return customer;
     }

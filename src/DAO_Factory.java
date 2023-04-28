@@ -142,7 +142,6 @@ public class DAO_Factory {
 				dbconnection = null;
 
 				// Nullify all DAO objects
-				// studentDAO = null;
 				transactionDAO = null;
 				loginDAO = null;
 				customerDAO = null;
