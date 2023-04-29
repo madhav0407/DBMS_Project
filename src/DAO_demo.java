@@ -477,15 +477,14 @@ public class DAO_demo {
                     }
                 } else if (user_type == 2) {
                     String name, phnum, address, dob, pass;
-                    System.out.println("Enter your first name: ");
-                    String firstName = sc.next();
-                    System.out.println("Enter your last name: ");
-                    String lastName = sc.next();
-                    name = firstName + " " + lastName;
+                    System.out.println("Enter your name: ");
+                    name = sc.nextLine();
+                    name = sc.nextLine();
                     System.out.println("Enter your phone number: ");
                     phnum = sc.next();
-                    System.out.println("Enter your address: "); // Address should be multiple words
-                    address = sc.next();
+                    System.out.println("Enter your address: ");
+                    address = sc.nextLine();
+                    address = sc.nextLine();
                     System.out.println("Enter your date of birth: ");
                     dob = sc.next();
                     System.out.println("Enter your password: ");
