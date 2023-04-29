@@ -159,10 +159,9 @@ public class DAO_demo {
                                 daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
                                 break;
                             }
-                            if (db.getAccountNum().equals(account.getAccountNum())){
+                            if (db.getAccountNum().equals(account.getAccountNum())) {
                                 transfer = ddao.withdraw(db, amt, tdao);
-                            }
-                            else{
+                            } else{
                                 System.out.println("Enter valid Debit card Number!");
                                 daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
                                 break;

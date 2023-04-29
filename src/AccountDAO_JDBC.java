@@ -12,7 +12,7 @@ public class AccountDAO_JDBC implements AccountDAO {
         PreparedStatement preparedStatement = null;
         String sql;
 
-        sql = "select * from account a where a.accountNumber = ?;";
+        sql = "select * from account a where a.accountNumber = ? and a.accountStatus = 1;";
         Account acc = new Account();
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
