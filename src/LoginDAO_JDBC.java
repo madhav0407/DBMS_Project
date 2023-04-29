@@ -42,7 +42,7 @@ public class LoginDAO_JDBC implements LoginDAO {
     CustomerDAO custDAO) {
         PreparedStatement preparedStatement = null;
         String sql;
-        Statement stmt = null;
+        // Statement stmt = null;
 
         Customer customer = new Customer(name, phoneNumber, address, dob);
         customer = custDAO.addCustomer(customer);

@@ -9,7 +9,7 @@ public class DAO_demo {
             CustomerDAO cdao = daoFactory.getCustomerDao();
             AccountDAO adao = daoFactory.getAccountDao();
             BranchDAO bdao = daoFactory.getBranchDAO();
-            DebitCardDAO ddao = daoFactory.getDebitCardDAO();
+            // DebitCardDAO ddao = daoFactory.getDebitCardDAO();
             // TransactionDAO tdao = daoFactory.getTransactionDAO();
             // LoginDAO ldao = daoFactory.getLoginDao();
             // AdminDAO idao = daoFactory.getAdminDAO();
@@ -259,9 +259,9 @@ public class DAO_demo {
                     try {
                         daoFactory.activateConnection();
                         LoginDAO ldao = daoFactory.getLoginDao();
-                        // CustomerDAO cdao = daoFactory.getCustomerDao();
                         AdminDAO idao = daoFactory.getAdminDAO();
-                        AccountDAO adao = daoFactory.getAccountDao();
+                        // CustomerDAO cdao = daoFactory.getCustomerDao();
+                        // AccountDAO adao = daoFactory.getAccountDao();
                         Admin adm = ldao.adminLogin(adminID, pass, idao);
                         if (adm.getAdminID() == -1) {
                             System.out.println("Enter valid credentials!");
@@ -286,9 +286,9 @@ public class DAO_demo {
                         LoginDAO ldao = daoFactory.getLoginDao();
                         CustomerDAO cdao = daoFactory.getCustomerDao();
                         // AdminDAO idao = daoFactory.getAdminDAO();
-                        AccountDAO adao = daoFactory.getAccountDao();
-                        BranchDAO bdao = daoFactory.getBranchDAO();
-                        TransactionDAO tdao = daoFactory.getTransactionDAO();
+                        // AccountDAO adao = daoFactory.getAccountDao();
+                        // BranchDAO bdao = daoFactory.getBranchDAO();
+                        // TransactionDAO tdao = daoFactory.getTransactionDAO();
                         Customer cust = ldao.customerLogin(custID, pass, cdao);
                         if (cust.getCustomerID() == -1) {
                             System.out.println("Enter valid credentials!");
@@ -314,9 +314,9 @@ public class DAO_demo {
                         try {
                             daoFactory.activateConnection();
                             LoginDAO ldao = daoFactory.getLoginDao();
-                            // CustomerDAO cdao = daoFactory.getCustomerDao();
-                            AccountDAO adao = daoFactory.getAccountDao();
                             AdminDAO idao = daoFactory.getAdminDAO();
+                            // CustomerDAO cdao = daoFactory.getCustomerDao();
+                            // AccountDAO adao = daoFactory.getAccountDao();
                             Admin adm = ldao.adminSignUp(name, pass, idao);
                             // System.out.println("Your ID is: " + adm.getAdminID());
                             daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
@@ -350,9 +350,9 @@ public class DAO_demo {
                             LoginDAO ldao = daoFactory.getLoginDao();
                             CustomerDAO cdao = daoFactory.getCustomerDao();
                             // AdminDAO idao = daoFactory.getAdminDAO();
-                            TransactionDAO tdao = daoFactory.getTransactionDAO();
-                            BranchDAO bdao = daoFactory.getBranchDAO();
-                            AccountDAO adao = daoFactory.getAccountDao();
+                            // TransactionDAO tdao = daoFactory.getTransactionDAO();
+                            // BranchDAO bdao = daoFactory.getBranchDAO();
+                            // AccountDAO adao = daoFactory.getAccountDao();
                             Customer cust = ldao.customerSignUp(name, phnum, address, dob, pass, cdao);
                             daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
                             if (cust.getCustomerID() != -1) {
