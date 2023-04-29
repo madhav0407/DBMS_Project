@@ -310,17 +310,22 @@ public class AccountDAO_JDBC implements AccountDAO {
             preparedStatement.setString(2, acc.getAccountNum());
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
-                if (flag == 0) {
-                    flag = 1;
-                    amount = 0;
-                }
-                if (acc.getAccountNum().equals(resultSet.getString(3))) {
-                    amount -= resultSet.getFloat(2);
-                } else {
-                    amount += resultSet.getFloat(2);
-                }
+            if (resultSet.next() == false){ // Done to check if no transactions made by account
+                amount = 0;
+            } else {
+                do {
+                    if (flag == 0) {
+                        flag = 1;
+                        amount = 0;
+                    }
+                    if (acc.getAccountNum().equals(resultSet.getString(3))) {
+                        amount -= resultSet.getFloat(2);
+                    } else {
+                        amount += resultSet.getFloat(2);
+                    }
+                } while(resultSet.next());
             }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

@@ -9,7 +9,7 @@ public class DAO_demo {
 
         while (true) {
             System.out.println(
-                    "What would you like to do?\n1. Account Login\n2. Create Account\n3. Delete Account\n4. Exit");
+                    "What would you like to do?\n1. Account Login\n2. Create Account\n3. Delete Account\n4. See all Transactions \n5. Exit");
             int choice = sc.nextInt();
             if (choice == 1) {
                 String accountNum;
@@ -20,7 +20,7 @@ public class DAO_demo {
                     daoFactory.activateConnection();
                     CustomerDAO cdao = daoFactory.getCustomerDao();
                     AccountDAO adao = daoFactory.getAccountDao();
-                    Account acc = cdao.accountLogin(cust, accountNum, adao);
+                    Account acc = cdao.accountLogin(cust, accountNum, adao); // Need to check accountStatus while logging in
                     if (acc.getAccountNum() == null) { // checking if the account number matches to the customer or even exists
                         System.out.println("Enter valid transfer account number!");
                         daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
@@ -33,10 +33,10 @@ public class DAO_demo {
                     e.printStackTrace();
                 }  
             } else if (choice == 2) {
-                int customerID, branchID;
+                int branchID;
                 float balance, minBalance;
-                System.out.println("Enter your customerID: ");
-                customerID = sc.nextInt();
+                // System.out.println("Enter your customerID: "); // ERROR here: Solved (Should not be able to make account for any other customer)
+                // customerID = sc.nextInt();
 
                 try {
                     daoFactory.activateConnection();
@@ -54,7 +54,7 @@ public class DAO_demo {
                     balance = sc.nextFloat();
                     System.out.println("Enter the minimum balance your account must store: ");
                     minBalance = sc.nextFloat();
-                    Account acc = cdao.createAccount(customerID, balance, minBalance, branchID, adao);
+                    Account acc = cdao.createAccount(cust.getCustomerID(), balance, minBalance, branchID, adao);
 
                     daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
                     obj.AccountMenu(acc, sc, daoFactory);
@@ -65,13 +65,20 @@ public class DAO_demo {
             } else if (choice == 3) {
                 String accnum;
                 System.out.println("Enter account number of account to be deleted: ");
-                accnum = sc.next();
+                accnum = sc.next(); // ERROR: Any account number works whether it belongs to the customer or not
+                                    // Need to check if that account belongs to the customer that logged in
                 
                 try {
                     daoFactory.activateConnection();
                     CustomerDAO cdao = daoFactory.getCustomerDao();
                     AccountDAO adao = daoFactory.getAccountDao();
                     Account acc = adao.getAccount(accnum);
+
+                    if (acc.getAccountNum() == null || acc.getCustomerID() != cust.getCustomerID()) {
+                        System.out.println("Enter valid account number!");
+                        daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
+                        continue;  
+                    }
 
                     Boolean flg = cdao.deleteAccount(acc, adao);
                     if (flg == true) {
@@ -84,7 +91,27 @@ public class DAO_demo {
                     daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
                     e.printStackTrace();
                 }
-            } else if (choice == 4) {
+                
+            } 
+            else if (choice == 4){
+                
+                try {
+                    daoFactory.activateConnection();
+                    CustomerDAO cdao = daoFactory.getCustomerDao();
+
+                    ArrayList<Transaction> transfers = cdao.getTransactions(cust);
+
+                    for (int i = 0; i < transfers.size(); i++) {
+                        transfers.get(i).printAll();
+                    }
+
+                    daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
+                } catch (Exception e) {
+                    daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
+                    e.printStackTrace();
+                }
+            }
+            else if (choice == 5) {
                 return;
             }
         }
@@ -98,7 +125,7 @@ public class DAO_demo {
             int choice = sc.nextInt();
             if (choice == 1) {
                 float amt;
-                System.out.println("Enter amount to be withdrawn: ");
+                System.out.println("Enter amount to be withdrawn: "); 
                 amt = sc.nextFloat();
 
                 try {
@@ -107,9 +134,15 @@ public class DAO_demo {
                     AccountDAO adao = daoFactory.getAccountDao();
                     DebitCardDAO ddao = daoFactory.getDebitCardDAO();
 
+                    if (account.getBalance() < amt){ // ERROR: Withdraw amount should not be greater than bank balance
+                        System.out.println("Withdraw amount greater than bank balance!"); 
+                        daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
+                        continue;
+                    }
+
                     while (true) {
                         Transaction transfer = new Transaction();
-                        System.out.println("What would you like to withdraw amount using?\n1. Account\2. Debit Card");
+                        System.out.println("What would you like to withdraw amount using?\n1. Account\n2. Debit Card");
                         System.out.println("Enter choice: ");
                         int ch = sc.nextInt();
     
@@ -120,7 +153,19 @@ public class DAO_demo {
                             System.out.println("Enter card number: ");
                             cardnum = sc.next();
                             DebitCard db = ddao.getCard(cardnum);
-                            transfer = ddao.withdraw(db, amt, tdao);
+                            if (db.getCardNum() == null){
+                                System.out.println("Enter valid Debit card Number!");
+                                daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
+                                break;
+                            }
+                            if (db.getAccountNum().equals(account.getAccountNum())){
+                                transfer = ddao.withdraw(db, amt, tdao);
+                            }
+                            else{
+                                System.out.println("Enter valid Debit card Number!");
+                                daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
+                                break;
+                            }
                         } else {
                             System.out.println("Enter valid input!");
                             continue;
@@ -168,11 +213,11 @@ public class DAO_demo {
                 System.out.println("Enter transfer account number: ");
                 transfer_account = sc.next();
 
-                // dont understand the utility of checking this here
-                // if (transfer_account == null) {
-                //     System.out.println("Enter valid transfer account number!");
-                //     continue;
-                // }
+                if (account.getBalance() < amt){ // ERROR: Withdraw amount should not be greater than bank balance
+                    System.out.println("Transfer amount greater than bank balance!"); 
+                    daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
+                    continue;
+                }
 
                 try {
                     daoFactory.activateConnection();
@@ -185,7 +230,7 @@ public class DAO_demo {
                     // Account acc = transf_acc.getAccount(transfer_account);
 
                     Account acc = adao.getAccount(transfer_account);
-                    if (transfer_account == null) {
+                    if (acc.getAccountNum() == null) {
                         System.out.println("Enter valid transfer account number!");
                         daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
                         continue;
@@ -194,7 +239,7 @@ public class DAO_demo {
                     
                     while (true) {
                         System.out.println(
-                                "What would you like to transfer amount using?\n1. Account\2. Debit Card");
+                                "What would you like to transfer amount using?\n1. Account\n2. Debit Card");
                         System.out.println("Enter choice: ");
                         int ch = sc.nextInt();
                         if (ch == 1) {
@@ -204,7 +249,19 @@ public class DAO_demo {
                             System.out.println("Enter card number: ");
                             cardnum = sc.next();
                             DebitCard db = ddao.getCard(cardnum);
-                            transfer = ddao.transfer(db, acc, amt, tdao);
+                            if (db.getCardNum() == null){
+                                System.out.println("Enter valid Debit card Number!");
+                                daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
+                                break;
+                            }
+                            if (db.getAccountNum().equals(account.getAccountNum())){
+                                transfer = ddao.transfer(db, acc, amt, tdao);
+                            }
+                            else{
+                                System.out.println("Enter valid Debit card Number!");
+                                daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
+                                break;
+                            }
                         } else {
                             System.out.println("Enter valid input!");
                             continue;
@@ -238,9 +295,9 @@ public class DAO_demo {
                 }
             } else if (choice == 5) {
                 String st, end;
-                System.out.println("Enter start date: ");
+                System.out.println("Enter start date (Format: dd/mm/yyyy): ");
                 st = sc.next();
-                System.out.println("Enter end date: ");
+                System.out.println("Enter end date (Format: dd/mm/yyyy): ");
                 end = sc.next();
 
                 try {
@@ -258,9 +315,12 @@ public class DAO_demo {
                     e.printStackTrace();
                 }
             } else if (choice == 6) {
-                String name;
-                System.out.println("Enter name on card: ");
-                name = sc.next();
+                String firstName, lastName;
+                System.out.println("Enter First Name: ");
+                firstName = sc.next();
+                System.out.println("Enter Last Name: ");
+                lastName = sc.next();
+                String name = firstName + " " + lastName;
 
                 try {
                     daoFactory.activateConnection();
@@ -417,11 +477,14 @@ public class DAO_demo {
                     }
                 } else if (user_type == 2) {
                     String name, phnum, address, dob, pass;
-                    System.out.println("Enter your name: ");
-                    name = sc.next();
+                    System.out.println("Enter your first name: ");
+                    String firstName = sc.next();
+                    System.out.println("Enter your last name: ");
+                    String lastName = sc.next();
+                    name = firstName + " " + lastName;
                     System.out.println("Enter your phone number: ");
                     phnum = sc.next();
-                    System.out.println("Enter your address: ");
+                    System.out.println("Enter your address: "); // Address should be multiple words
                     address = sc.next();
                     System.out.println("Enter your date of birth: ");
                     dob = sc.next();

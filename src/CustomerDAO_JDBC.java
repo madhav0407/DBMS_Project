@@ -61,6 +61,9 @@ public class CustomerDAO_JDBC implements CustomerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 acc = adao.getAccount(accountNum);
+                if (acc.getAccountStatus() == 0){
+                    acc.setAccountNumber(null);
+                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
