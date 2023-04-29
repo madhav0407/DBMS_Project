@@ -2,7 +2,6 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class DebitCardDAO_JDBC implements DebitCardDAO {
     Connection dbConnection;
 
@@ -10,7 +9,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
         dbConnection = dbconn;
     }
 
-    private int getNumberOfCards () {
+    private int getNumberOfCards() {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -20,7 +19,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             preparedStatement = dbConnection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                val = resultSet.getInt(1); 
+                val = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -36,7 +35,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
         return val;
     }
 
-    public DebitCard addCard (DebitCard db) {
+    public DebitCard addCard(DebitCard db) {
         PreparedStatement preparedStatement = null;
         String sql;
         sql = "insert into debitCard VALUES (?, ?, ?, ?, ?);";
@@ -64,7 +63,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             }
             preparedStatement.setInt(4, numOfCards);
             preparedStatement.setString(5, db.getName());
-            
+
             // execute insert SQL stetement
             preparedStatement.executeUpdate();
             db.setCardNum(cardNum);
@@ -83,7 +82,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
         return db;
     }
 
-    public DebitCard getCard (String cardNum) {
+    public DebitCard getCard(String cardNum) {
         PreparedStatement preparedStatement = null;
         String sql;
 
@@ -100,8 +99,8 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
                 db.setCardNum(cardNum);
 
                 java.sql.Date date = resultSet.getDate(3);
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				String dateString = dateFormat.format(date);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String dateString = dateFormat.format(date);
                 db.setExpDate(dateString);
 
                 db.setCVV(resultSet.getInt(4));
@@ -119,20 +118,20 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             System.out.println(e.getMessage());
         }
         return db;
-    } 
+    }
 
-    public Transaction withdraw (DebitCard db, float amount, TransactionDAO tdao) {
+    public Transaction withdraw(DebitCard db, float amount, TransactionDAO tdao) {
         PreparedStatement preparedStatement = null;
         String sql;
-        Transaction tra = new Transaction(); 
+        Transaction tra = new Transaction();
         sql = "update account set balance = balance - ? where accountNumber = ?;";
-        
+
         try {
             preparedStatement = dbConnection.prepareStatement(sql);
-            
+
             preparedStatement.setString(2, db.getAccountNum());
-            preparedStatement.setFloat(1, amount); 
-            
+            preparedStatement.setFloat(1, amount);
+
             int affected = preparedStatement.executeUpdate();
             if (affected == 0) {
                 return tra;
@@ -141,20 +140,20 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
         try {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
         Transaction trans = new Transaction(amount, db.getAccountNum(), "NULL", "withdraw", "card");
         trans = tdao.addTransaction(trans);
         return trans;
     }
 
-    public Transaction transfer (DebitCard db, Account acc2, float amount, TransactionDAO tdao) {
+    public Transaction transfer(DebitCard db, Account acc2, float amount, TransactionDAO tdao) {
         PreparedStatement preparedStatement1 = null;
         String sql1;
         sql1 = "update account set balance = balance - ? where accountNumber = ?;";
@@ -191,7 +190,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }        
+        }
 
         try {
             if (preparedStatement2 != null) {
@@ -199,7 +198,7 @@ public class DebitCardDAO_JDBC implements DebitCardDAO {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }  
+        }
         return tra;
     }
 }

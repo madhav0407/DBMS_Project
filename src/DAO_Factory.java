@@ -16,7 +16,7 @@ public class DAO_Factory {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost/Bank?characterEncoding=latin1&useConfigs=maxPerformance";
 	static final String USER = "root";
-	static final String PASS = "shlok";
+	static final String PASS = "nilay";
 	Connection dbconnection = null;
 
 	// You can add additional DAOs here as needed
@@ -118,6 +118,7 @@ public class DAO_Factory {
 
 		return adminDAO;
 	}
+
 	public BranchDAO getBranchDAO() throws Exception {
 		if (activeConnection == false)
 			throw new Exception("Connection not activated...");
@@ -147,7 +148,7 @@ public class DAO_Factory {
 				customerDAO = null;
 				accountDAO = null;
 				debitCardDAO = null;
-				adminDAO = null;	
+				adminDAO = null;
 				branchDAO = null;
 			} catch (SQLException ex) {
 				// handle any errors

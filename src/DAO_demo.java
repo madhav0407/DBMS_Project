@@ -5,14 +5,14 @@ public class DAO_demo {
 
     public void CustomerMenu(Customer cust, Scanner sc, DAO_Factory daoFactory) {
         System.out.println("Hello " + cust.getName() + "!");
-        try{
-            DebitCardDAO ddao = daoFactory.getDebitCardDAO();
-            LoginDAO ldao = daoFactory.getLoginDao();
+        try {
             CustomerDAO cdao = daoFactory.getCustomerDao();
-            // AdminDAO idao = daoFactory.getAdminDAO();
             AccountDAO adao = daoFactory.getAccountDao();
             BranchDAO bdao = daoFactory.getBranchDAO();
-            TransactionDAO tdao = daoFactory.getTransactionDAO();
+            DebitCardDAO ddao = daoFactory.getDebitCardDAO();
+            // TransactionDAO tdao = daoFactory.getTransactionDAO();
+            // LoginDAO ldao = daoFactory.getLoginDao();
+            // AdminDAO idao = daoFactory.getAdminDAO();
             while (true) {
                 System.out.println(
                         "What would you like to do?\n1. Account Login\n2. Create Account\n3. Delete Account\n4. Exit");
@@ -57,23 +57,22 @@ public class DAO_demo {
                     return;
                 }
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void AccountMenu(Account account, Scanner sc, DAO_Factory daofactory) {
         System.out.println("Hello!");
-        try{
-            DebitCardDAO ddao = daoFactory.getDebitCardDAO();
-            LoginDAO ldao = daoFactory.getLoginDao();
-            CustomerDAO cdao = daoFactory.getCustomerDao();
-            // AdminDAO idao = daoFactory.getAdminDAO();
+        try {
             AccountDAO adao = daoFactory.getAccountDao();
-            BranchDAO bdao = daoFactory.getBranchDAO();
+            DebitCardDAO ddao = daoFactory.getDebitCardDAO();
             TransactionDAO tdao = daoFactory.getTransactionDAO();
+            // LoginDAO ldao = daoFactory.getLoginDao();
+            // CustomerDAO cdao = daoFactory.getCustomerDao();
+            // AdminDAO idao = daoFactory.getAdminDAO();
+            // BranchDAO bdao = daoFactory.getBranchDAO();
+
             while (true) {
                 System.out.println(
                         "What would you like to do?\n1. Withdraw\n2. Deposit\n3. Transfer\n4. Get Balance\n5. Get Transactions\n6. Add Debit Card\n7. Get total spending\n8. Exit");
@@ -82,7 +81,25 @@ public class DAO_demo {
                     float amt;
                     System.out.println("Enter amount to be withdrawn: ");
                     amt = sc.nextFloat();
-                    Transaction transfer = adao.withdraw(account, amt, tdao);
+                    Transaction transfer = new Transaction();
+                    while (true) {
+                        System.out.println("What would you like to withdraw amount using?\n1. Account\2. Debit Card");
+                        System.out.println("Enter choice: ");
+                        int ch = sc.nextInt();
+                        if (ch == 1) {
+                            transfer = adao.withdraw(account, amt, tdao);
+                            break;
+                        } else if (ch == 2) {
+                            String cardnum;
+                            System.out.println("Enter card number: ");
+                            cardnum = sc.next();
+                            DebitCard db = ddao.getCard(cardnum);
+                            transfer = ddao.withdraw(db, amt, tdao);
+                            break;
+                        } else {
+                            System.out.println("Enter valid input!");
+                        }
+                    }
                     transfer.printAll();
                 } else if (choice == 2) {
                     float amt;
@@ -108,7 +125,27 @@ public class DAO_demo {
                             tdao = daoFactory.getTransactionDAO();
                             AccountDAO transf_acc = daoFactory.getAccountDao();
                             Account acc = transf_acc.getAccount(transfer_account);
-                            Transaction transfer = adao.transfer(account, acc, amt, tdao);
+                            Transaction transfer = new Transaction();
+
+                            while (true) {
+                                System.out.println(
+                                        "What would you like to transfer amount using?\n1. Account\2. Debit Card");
+                                System.out.println("Enter choice: ");
+                                int ch = sc.nextInt();
+                                if (ch == 1) {
+                                    transfer = adao.transfer(account, acc, amt, tdao);
+                                    break;
+                                } else if (ch == 2) {
+                                    String cardnum;
+                                    System.out.println("Enter card number: ");
+                                    cardnum = sc.next();
+                                    DebitCard db = ddao.getCard(cardnum);
+                                    transfer = ddao.transfer(db, acc, amt, tdao);
+                                    break;
+                                } else {
+                                    System.out.println("Enter valid input!");
+                                }
+                            }
                             transfer.printAll();
                             System.out.println();
                             // daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
@@ -130,8 +167,7 @@ public class DAO_demo {
                     for (int i = 0; i < transfers.size(); i++) {
                         transfers.get(i).printAll();
                     }
-                } else if (choice == 6) 
-                {
+                } else if (choice == 6) {
                     String name;
                     System.out.println("Enter name on card: ");
                     name = sc.next();
@@ -141,35 +177,32 @@ public class DAO_demo {
                     System.out.println("Expiration Date: " + db.getExpDate());
                 } else if (choice == 7) {
                     float spending = adao.getSpending(account);
-                    System.out.println("Your total spending is: "+spending);
-                }
-                else if (choice == 8) {
+                    System.out.println("Your total spending is: " + spending);
+                } else if (choice == 8) {
                     return;
                 }
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void AdminMenu(Admin adm, Scanner sc, DAO_Factory daoFactory) {
         System.out.println("Hello " + adm.getName() + "!");
-        try{
-            DebitCardDAO ddao = daoFactory.getDebitCardDAO();
-            LoginDAO ldao = daoFactory.getLoginDao();
+        try {
+            // DebitCardDAO ddao = daoFactory.getDebitCardDAO();
+            // LoginDAO ldao = daoFactory.getLoginDao();
             // CustomerDAO cdao = daoFactory.getCustomerDao();
-            AdminDAO idao = daoFactory.getAdminDAO();
-            AccountDAO adao = daoFactory.getAccountDao();
-            BranchDAO bdao = daoFactory.getBranchDAO();
-            TransactionDAO tdao = daoFactory.getTransactionDAO();
+            // BranchDAO bdao = daoFactory.getBranchDAO();
+            // TransactionDAO tdao = daoFactory.getTransactionDAO();
             while (true) {
                 System.out.println("What would you like to do?\n1. Get Accounts\n2. Exit");
                 int choice = sc.nextInt();
                 if (choice == 1) {
                     try {
                         daoFactory.activateConnection();
+                        AdminDAO idao = daoFactory.getAdminDAO();
+                        AccountDAO adao = daoFactory.getAccountDao();
                         idao = daoFactory.getAdminDAO();
                         adao = daoFactory.getAccountDao();
                         ArrayList<Account> accounts = idao.getAccounts(adm, adao);
@@ -186,8 +219,7 @@ public class DAO_demo {
                     return;
                 }
             }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -233,6 +265,7 @@ public class DAO_demo {
                         Admin adm = ldao.adminLogin(adminID, pass, idao);
                         if (adm.getAdminID() == -1) {
                             System.out.println("Enter valid credentials!");
+                            daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
                             continue;
                         }
                         daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);

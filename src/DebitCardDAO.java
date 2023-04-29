@@ -4,4 +4,6 @@ public interface DebitCardDAO {
     public Transaction withdraw(DebitCard db, float amount, TransactionDAO tdao);
 
     public Transaction transfer(DebitCard db, Account acc2, float amount, TransactionDAO tdao);
+
+    public DebitCard getCard(String cardNum);
 }
