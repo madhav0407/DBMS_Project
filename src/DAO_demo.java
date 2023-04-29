@@ -40,7 +40,7 @@ public class DAO_demo {
                     AccountDAO adao = daoFactory.getAccountDao();
 >>>>>>> 3d8cb3d (demo should work)
                     Account acc = cdao.accountLogin(cust, accountNum, adao);
-                    if (acc.getAccountNum() == null) { // checking if the account number matches to the customer or even exists
+                    if (acc.getAccountNum() == null) { // checking if the account number matches to the customer or even exist
                         System.out.println("Enter valid transfer account number!");
                         daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
                         continue;  
