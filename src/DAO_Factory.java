@@ -16,7 +16,7 @@ public class DAO_Factory {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost/bank?characterEncoding=latin1&useConfigs=maxPerformance";
 	static final String USER = "root";
-	static final String PASS = "madhav";
+	static final String PASS = "shlok";
 	Connection dbconnection = null;
 
 	// You can add additional DAOs here as needed

@@ -44,11 +44,11 @@ public class DAO_demo {
                     CustomerDAO cdao = daoFactory.getCustomerDao();
                     AccountDAO adao = daoFactory.getAccountDao();
 
+                    System.out.println("Enter ID of branch that you would like to join: ");
                     ArrayList<Branch> branches = bdao.getBranches();
                     for (int i = 0; i < branches.size(); i++) {
                         branches.get(i).printAll();
                     }
-                    System.out.println("Enter ID of branch that you would like to join: ");
                     branchID = sc.nextInt();
                     System.out.println("Enter your balance: ");
                     balance = sc.nextFloat();
@@ -93,7 +93,7 @@ public class DAO_demo {
                 }
                 
             } 
-            else if (choice == 4){
+            else if (choice == 4) {
                 
                 try {
                     daoFactory.activateConnection();
@@ -103,6 +103,7 @@ public class DAO_demo {
 
                     for (int i = 0; i < transfers.size(); i++) {
                         transfers.get(i).printAll();
+                        System.out.println();
                     }
 
                     daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
@@ -121,7 +122,7 @@ public class DAO_demo {
         System.out.println("Hello!");
         while (true) {
             System.out.println(
-            "What would you like to do?\n1. Withdraw\n2. Deposit\n3. Transfer\n4. Get Balance\n5. Get Transactions\n6. Add Debit Card\n7. Get total spending\n8. Exit");
+            "What would you like to do?\n1. Withdraw\n2. Deposit\n3. Transfer\n4. Get Balance\n5. Get Transactions between specified dates\n6. Add Debit Card\n7. Get total spending\n8. Exit");
             int choice = sc.nextInt();
             if (choice == 1) {
                 float amt;
@@ -134,7 +135,7 @@ public class DAO_demo {
                     AccountDAO adao = daoFactory.getAccountDao();
                     DebitCardDAO ddao = daoFactory.getDebitCardDAO();
 
-                    if (account.getBalance() < amt){ // ERROR: Withdraw amount should not be greater than bank balance
+                    if (adao.getBalance(account) < amt){ // ERROR: Withdraw amount should not be greater than bank balance
                         System.out.println("Withdraw amount greater than bank balance!"); 
                         daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
                         continue;
@@ -213,18 +214,18 @@ public class DAO_demo {
                 System.out.println("Enter transfer account number: ");
                 transfer_account = sc.next();
 
-                if (account.getBalance() < amt){ // ERROR: Withdraw amount should not be greater than bank balance
-                    System.out.println("Transfer amount greater than bank balance!"); 
-                    daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
-                    continue;
-                }
-
+                
                 try {
                     daoFactory.activateConnection();
                     AccountDAO adao = daoFactory.getAccountDao();
                     TransactionDAO tdao = daoFactory.getTransactionDAO();
                     DebitCardDAO ddao = daoFactory.getDebitCardDAO();
-
+                    
+                    if (adao.getBalance(account) < amt){ // ERROR: Withdraw amount should not be greater than bank balance
+                        System.out.println("Transfer amount greater than bank balance!"); 
+                        daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK); 
+                        continue;
+                    }
                     // why define a new accountDAO object
                     // AccountDAO transf_acc = daoFactory.getAccountDao();
                     // Account acc = transf_acc.getAccount(transfer_account);
@@ -308,6 +309,7 @@ public class DAO_demo {
                     ArrayList<Transaction> transfers = adao.getTransactions(account, st, end, tdao);
                     for (int i = 0; i < transfers.size(); i++) {
                         transfers.get(i).printAll();
+                        System.out.println();
                     }
                     daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
                 } catch (Exception e) {
@@ -444,74 +446,74 @@ public class DAO_demo {
                     e.printStackTrace();
                 }
             } else if (choice == 3) {
-                System.out.println("What would you like to sign up as?\n1. Admin\n2. Customer\n3. Go Back");
-                Integer user_type;
-                user_type = sc.nextInt();
+                // System.out.println("What would you like to sign up as?\n1. Admin\n2. Customer\n3. Go Back");
+                // Integer user_type;
+                // user_type = sc.nextInt();
                 
-                if (user_type == 1) {
-                    String name, pass;
-                    System.out.println("Enter your name: ");
-                    name = sc.next();
-                    System.out.println("Enter your password: ");
-                    pass = sc.next();
+                // if (user_type == 1) {
+                //     String name, pass;
+                //     System.out.println("Enter your name: ");
+                //     name = sc.next();
+                //     System.out.println("Enter your password: ");
+                //     pass = sc.next();
 
-                    try {
-                        daoFactory.activateConnection();
-                        LoginDAO ldao = daoFactory.getLoginDao();
-                        AdminDAO idao = daoFactory.getAdminDAO();
-                        Admin adm = ldao.adminSignUp(name, pass, idao);
+                //     try {
+                //         daoFactory.activateConnection();
+                //         LoginDAO ldao = daoFactory.getLoginDao();
+                //         AdminDAO idao = daoFactory.getAdminDAO();
+                //         Admin adm = ldao.adminSignUp(name, pass, idao);
                         
-                        if (adm.getAdminID() != -1) {
-                            System.out.println("Your ID is: " + adm.getAdminID());
-                            daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
-                            obj.AdminMenu(adm, sc, daoFactory);
-                        } else {
-                            System.out.println("Sign up failed.");
-                            System.out.println("Please enter valid details.");
-                            daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
-                            continue;
-                        }
-                    } catch (Exception e) {
-                        daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
-                        e.printStackTrace();
-                    }
-                } else if (user_type == 2) {
-                    String name, phnum, address, dob, pass;
-                    System.out.println("Enter your name: ");
-                    name = sc.nextLine();
-                    name = sc.nextLine();
-                    System.out.println("Enter your phone number: ");
-                    phnum = sc.next();
-                    System.out.println("Enter your address: ");
-                    address = sc.nextLine();
-                    address = sc.nextLine();
-                    System.out.println("Enter your date of birth: ");
-                    dob = sc.next();
-                    System.out.println("Enter your password: ");
-                    pass = sc.next();
+                //         if (adm.getAdminID() != -1) {
+                //             System.out.println("Your ID is: " + adm.getAdminID());
+                //             daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
+                //             obj.AdminMenu(adm, sc, daoFactory);
+                //         } else {
+                //             System.out.println("Sign up failed.");
+                //             System.out.println("Please enter valid details.");
+                //             daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
+                //             continue;
+                //         }
+                //     } catch (Exception e) {
+                //         daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
+                //         e.printStackTrace();
+                //     }
+                // } else if (user_type == 2) {
+                String name, phnum, address, dob, pass;
+                System.out.println("Enter your name: ");
+                name = sc.nextLine();
+                name = sc.nextLine();
+                System.out.println("Enter your phone number: ");
+                phnum = sc.next();
+                System.out.println("Enter your address: ");
+                address = sc.nextLine();
+                address = sc.nextLine();
+                System.out.println("Enter your date of birth: ");
+                dob = sc.next();
+                System.out.println("Enter your password: ");
+                pass = sc.next();
 
-                    try {
-                        daoFactory.activateConnection();
-                        LoginDAO ldao = daoFactory.getLoginDao();
-                        CustomerDAO cdao = daoFactory.getCustomerDao();
-                        Customer cust = ldao.customerSignUp(name, phnum, address, dob, pass, cdao);
-                        if (cust.getCustomerID() != -1) {
-                            System.out.println("Your ID is: " + cust.getCustomerID());
-                            daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
-                            obj.CustomerMenu(cust, sc, daoFactory);
-                        } else {
-                            daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
-                            System.out.println("Sign up failed.");
-                            System.out.println("Please enter valid details.");
-                            continue;
-                        }
-                    } catch (Exception e) {
+                try {
+                    daoFactory.activateConnection();
+                    LoginDAO ldao = daoFactory.getLoginDao();
+                    CustomerDAO cdao = daoFactory.getCustomerDao();
+                    Customer cust = ldao.customerSignUp(name, phnum, address, dob, pass, cdao);
+                    if (cust.getCustomerID() != -1) {
+                        System.out.println("Your ID is: " + cust.getCustomerID());
+                        daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.COMMIT);
+                        obj.CustomerMenu(cust, sc, daoFactory);
+                    } else {
                         daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
-                        e.printStackTrace();
+                        System.out.println("Sign up failed.");
+                        System.out.println("Please enter valid details.");
+                        continue;
                     }
-                } else if (choice == 3) {
-                    continue;
+                } catch (Exception e) {
+                    daoFactory.deactivateConnection(DAO_Factory.TXN_STATUS.ROLLBACK);
+                    e.printStackTrace();
                 }
+                // } else if (choice == 3) {
+                //     continue;
+                // }
 
             } else if (choice == 4) {
                 break;
