@@ -36,7 +36,7 @@ create table customer (
 create table account (
     customerID int,
     accountNumber varchar(8),
-    balance decimal(19, 2), 
+    balance decimal(19, 2),
     minBalance decimal(19, 2),
     branchID int,
     accountStatus boolean,
@@ -108,16 +108,6 @@ insert into customer(c_name, phone_num, c_address, dob) VALUES
 ('Nilay Kamat', '9011496298', 'IIITB', '1987-2-11');
 
 insert into customerlogin(pass, customerID) VALUES
-('shlok', 1),
-('madhav', 2),
-('nilay', 3);
-
-insert into customer(c_name, phone_num, c_address, dob) VALUES
-('Shlok Agrawal', '9829986134', 'IIITB', '2002-12-26'),
-('Madhav Sood', '9910093697', 'IIITB', '2003-07-04'),
-('Nilay Kamat', '9011496298', 'IIITB', '1987-2-11');
-
-insert into login(pass, customerID) VALUES
 ('shlok', 1),
 ('madhav', 2),
 ('nilay', 3);
