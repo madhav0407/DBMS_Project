@@ -24,7 +24,7 @@ source <pathname_where_cloned>/DBMS_Project/sql/insert.sql
 
 5. Now, we will open the project folder into Visual Studio Code. Here, we will open file [DAO_Factory.java](https://github.com/madhav0407/DBMS_Project/blob/master/src/DAO_Factory.java). In this file, we should change the value of the variable PASS(on line 19) to your own sql password.
 
-6. Open the DAO_demo.java(since this is the driver code) and now, we shall run the project by clicking the Run Java button(in the top right corner of the VS Code window) as shown in the figure below.
+6. Open the [DAO_demo.java](https://github.com/madhav0407/DBMS_Project/blob/master/src/DAO_demo.java) (since this is the driver code) and now, we shall run the project by clicking the Run Java button(in the top right corner of the VS Code window) as shown in the figure below.
 ![Run Java](https://code.visualstudio.com/assets/docs/java/java-debugging/run-menu.png)
 
 7. The Project will run in the terminal and is user driven.
