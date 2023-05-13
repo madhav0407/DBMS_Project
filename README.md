@@ -16,15 +16,10 @@ use bank;
 ```
 
 4. Use the sql source command to run the .sql files stored in the [sql directory](https://github.com/madhav0407/DBMS_Project/tree/master/sql). You will have to use the path to the .sql file when using the source command.
-Example, my insert.sql file is stored at the location : /home/iiitb/IIITB/SEM4/DBMS/DBMS_Project/sql/insert.sql
 ```bash
-source /home/iiitb/IIITB/SEM4/DBMS/DBMS_Project/sql/insert.sql
-```
-Using this command will run insert.sql into the database bank. Thus, we will have to run 3 source commands in the following order:
-```bash
-source /home/iiitb/IIITB/SEM4/DBMS/DBMS_Project/sql/create.sql
-source /home/iiitb/IIITB/SEM4/DBMS/DBMS_Project/sql/alter.sql
-source /home/iiitb/IIITB/SEM4/DBMS/DBMS_Project/sql/insert.sql
+source <pathname_where_cloned>/DBMS_Project/sql/create.sql
+source <pathname_where_cloned>/DBMS_Project/sql/alter.sql
+source <pathname_where_cloned>/DBMS_Project/sql/insert.sql
 ```
 
 5. Now, we will open the project folder into Visual Studio Code. Here, we will open file [DAO_Factory.java](https://github.com/madhav0407/DBMS_Project/blob/master/src/DAO_Factory.java). In this file, we should change the value of the variable PASS(on line 19) to your own sql password.
